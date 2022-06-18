@@ -4,6 +4,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .slot {
+    @apply flex flex-col justify-between h-36 w-36 md:h-44 md:w-48 drop-shadow-md outline outline-0 hover:outline-offset-2 rounded-md m-4 p-5 md:text-xl bg-amber-400 hover:bg-amber-200 hover:cursor-pointer;
+  }
+  .floating-btn {
+    @apply drop-shadow-md text-gray-100  bg-gray-600 py-2 px-3 rounded-3xl font-bold flex items-center hover:bg-gray-500 md:text-2xl;
+  }
+  .checkbox {
+    @apply appearance-none text-amber-600 focus:accent-amber-600 h-6 w-6 border border-gray-300 rounded-md bg-white checked:bg-amber-600 focus:ring-amber-600 checked:border-amber-600 focus:outline-none transition duration-200 bg-no-repeat bg-center bg-contain mr-2 cursor-pointer;
+  }
+}
+
 body {
   font-family: 'Montserrat', sans-serif;
 }
