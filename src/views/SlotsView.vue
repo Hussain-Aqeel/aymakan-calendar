@@ -41,39 +41,15 @@
           <div v-for="index in 10"
                :key="index">
 
-            <!-- <div class="slot">
-              <p class="text-2xl md:text-3xl font-bold">
-                {{ printBaseHour() }}
-                <span>{{ setMorningOrNoon() }}</span>
-              </p>
-              <div class="form-check flex items-center">
-                <input class="form-check-input checkbox"
-                       type="checkbox"
-                       :name="printBaseHourName()"
-                       :id="printBaseHourName()"
-                       v-on:change="setTimeSlot(printBaseHourName())">
-                <label class="form-check-label text-md ml-2"
-                       :for="printBaseHourName()">
-                  {{ printBaseHour() }}
-                </label>
-              </div>
-              <div>
-                <input class="form-check-input checkbox"
-                       type="checkbox"
-                       :name="printAfterHalfHourName()"
-                       :id="printAfterHalfHourName()"
-                       v-on:change="setTimeSlot(printAfterHalfHourName())">
-                <label class="form-check-label text-md md:text-lg ml-2"
-                       :for="printAfterHalfHourName()">{{ printAfterHalfHourSlot() }}</label>
-              </div>
-            </div> -->
-
             <SlotComponentVue :baseHour="printBaseHour()"
                               :firstCheckboxLabel="printBaseHour()"
                               :secondCheckboxLabel="printAfterHalfHourSlot()"
                               :firstCheckboxName="printBaseHourName()"
                               :secondCheckboxName="printAfterHalfHourName()"
-                              :morningOrNoon="setMorningOrNoon()" />
+                              :morningOrNoon="setMorningOrNoon()"
+                              @setTimeSlot="setTimeSlot"
+                              @setSecondTimeSlot="setTimeSlot"
+                               />
 
             {{ updateRandomDateValue(60) }}
 
@@ -130,31 +106,7 @@ export default {
       }
 
       const room = ref("");
-      const slots = ref([
-        '0800',
-        '0830',
-        '0900',
-        '0930',
-        '1000',
-        '1030',
-        '1100',
-        '1130',
-        '1200',
-        '1230',
-        '0100',
-        '0130',
-        '0200',
-        '0230',
-        '0300',
-        '0330',
-        '0400',
-        '0430', 
-        '0500',
-        '0530',
-        '0600',
-        '0630',
-      ]);
-
+      const check = ref(false);
       const time = ref([]);
 
       const changeRoom = (roomName) => {
@@ -171,6 +123,10 @@ export default {
 
       const roomIsSelected = () => {
         return room.value !== '' ? true : false;
+      }
+
+      const toggleChecked = () => {
+        return !check.value;
       }
 
       const add30Minutes = () => {
@@ -210,23 +166,15 @@ export default {
         return lib.format(dateObj, 'dddd, MMM DD');
       }
 
-      const setTimeSlot = (timeSlot) => {
-        // const date = new Date();
-        // date.value.setHours(8);
-        // randomDate.value.setMinutes(0);
+      function setTimeSlot(timeSlot) {
+        check.value = toggleChecked();
 
-        console.log(timeSlot);
-        console.log(parseInt(timeSlot))
-        let lastIndex = time.value.length !== 0 ? time.value.length - 1 : 0;
+        if (check.value) {
+          console.log(`${timeSlot} is added to array`)
 
-        let lastItem = time.value[lastIndex];
-
-        console.log(time.value);
-        if (lastIndex === 0 || parseInt(timeSlot) - lastItem === 30 || parseInt(timeSlot) - lastItem === 70) {
-          time.value.push(parseInt(timeSlot));
-
+        } else {
+          console.log(`${timeSlot} is deleted from array`)
         }
-
       }
 
       return {
@@ -247,7 +195,6 @@ export default {
         getSlot,
         // variables
         randomDate,
-        slots
       }
 
     }

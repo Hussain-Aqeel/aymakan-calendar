@@ -9,7 +9,9 @@
              type="checkbox"
              :name="firstCheckboxName"
              :id="firstCheckboxName"
-             @change="setTimeSlot(firstCheckboxName)">
+             :ref="firstCheckboxName"
+             :checked="validateCheck"
+             @change="setTimeSlot">
       <label class="form-check-label text-md ml-2"
              :for="firstCheckboxName">
         {{ firstCheckboxLabel }}
@@ -20,7 +22,9 @@
              type="checkbox"
              :name="secondCheckboxName"
              :id="secondCheckboxName"
-             @change="setTimeSlot(secondCheckboxName)">
+             ref="checkboxValue"
+             :checked="validateCheck"
+             @click="setSecondTimeSlot">
       <label class="form-check-label text-md md:text-lg ml-2"
              :for="secondCheckboxName">{{ secondCheckboxLabel }}</label>
     </div>
@@ -28,6 +32,7 @@
 </template>
 
 <script>
+import { watch } from '@vue/runtime-core';
 import { ref } from 'vue';
 export default {
   props: [
@@ -38,38 +43,30 @@ export default {
     'firstCheckboxName',
     'secondCheckboxName',
     'firstCheckboxCheck',
-    'secondCheckboxCheck'
+    'secondCheckboxCheck',
+    'validateCheck'
   ],
 
-  setup() {
+  setup(props, context) {
 
-    const time = ref([]);
-    
-    const setTimeSlot = (timeSlot) => {
-      // const date = new Date();
-      // date.value.setHours(8);
-      // randomDate.value.setMinutes(0);
+    const checkboxValue = ref()
 
-      console.log(timeSlot);
-      console.log(parseInt(timeSlot))
-      let lastIndex = time.value.length !== 0 ? time.value.length - 1 : 0;
+    const setSecondTimeSlot = () => {
+        context.emit('setSecondTimeSlot', props.secondCheckboxName)
+    }
 
-      let lastItem = time.value[lastIndex];
-
-      console.log(time.value);
-      if (lastIndex === 0 || parseInt(timeSlot) - lastItem === 30 || parseInt(timeSlot) - lastItem === 70) {
-        time.value.push(parseInt(timeSlot));
-      }
-
+    const setTimeSlot = () => {
+      console.log(checkboxValue)
+        context.emit('setTimeSlot', checkboxValue.value)
     }
 
     return {
-      setTimeSlot
+      setTimeSlot,
+      setSecondTimeSlot,
     }
   }
 }
 </script>
-
 <style>
 
 </style>
