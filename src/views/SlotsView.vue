@@ -38,7 +38,7 @@
         <div
              class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
 
-          <div v-for="index in 11"
+          <div v-for="index in 10"
                :key="index">
 
             <!-- <div class="slot">
@@ -73,14 +73,13 @@
                               :secondCheckboxLabel="printAfterHalfHourSlot()"
                               :firstCheckboxName="printBaseHourName()"
                               :secondCheckboxName="printAfterHalfHourName()"
-                              :morningOrNoon="setMorningOrNoon()" 
-                              @set-time-slot="setTimeSlot(printBaseHourName())"
-                              />
+                              :morningOrNoon="setMorningOrNoon()" />
 
             {{ updateRandomDateValue(60) }}
 
           </div>
 
+          {{ setTime() }}
         </div>
 
         <footer class=" sticky bottom-1 p-2 flex justify-end">
@@ -131,6 +130,31 @@ export default {
       }
 
       const room = ref("");
+      const slots = ref([
+        '0800',
+        '0830',
+        '0900',
+        '0930',
+        '1000',
+        '1030',
+        '1100',
+        '1130',
+        '1200',
+        '1230',
+        '0100',
+        '0130',
+        '0200',
+        '0230',
+        '0300',
+        '0330',
+        '0400',
+        '0430', 
+        '0500',
+        '0530',
+        '0600',
+        '0630',
+      ]);
+
       const time = ref([]);
 
       const changeRoom = (roomName) => {
@@ -174,6 +198,11 @@ export default {
       const printAfterHalfHourName = () => {
         return convertTo12Hours(randomDate.value.getHours()) + String(add30Minutes()).padStart(2, '0')
       }
+
+      const getSlot = () => {
+        return convertTo12Hours(randomDate.value.getHours()) + String(randomDate.value.getMinutes()).padStart(2, '0');
+      }
+
       // $route.query.date
       const formatDate = (date) => {
         const arr = date.split("-");
@@ -182,6 +211,10 @@ export default {
       }
 
       const setTimeSlot = (timeSlot) => {
+        // const date = new Date();
+        // date.value.setHours(8);
+        // randomDate.value.setMinutes(0);
+
         console.log(timeSlot);
         console.log(parseInt(timeSlot))
         let lastIndex = time.value.length !== 0 ? time.value.length - 1 : 0;
@@ -211,10 +244,10 @@ export default {
         getRoom,
         setTimeSlot,
         getSlotTime,
-
+        getSlot,
         // variables
         randomDate,
-
+        slots
       }
 
     }

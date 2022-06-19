@@ -1,7 +1,7 @@
 <template>
     <WrapperViewVue>
         <div
-             class="container mx-auto text-gray-700 min-h-full p-6 mb-10 flex flex-col items-center">
+             class="container mx-auto text-gray-700 w-full min-h-full p-6 mb-10 flex flex-col justify-center">
 
             <router-link to="/slots"
                          class="self-start">
@@ -15,36 +15,39 @@
 
 
 
-            <div class="lg:w-2/5">
-                <div class="flex justify-between">
+            <div class="p-10 w-full mt-14 self-center">
+                <div class="grid grid-cols-2 sm:w-5/12 self-center">
                     <div id="slots"
                          class="drop-shadow-md mb-7 relative">
                         <div
-                             class="absolute -left-4 -top-4 bg-amber-400 rounded rounded-full">
+                             class="absolute -left-4 -top-4 bg-amber-400 rounded-full">
                             <font-awesome-icon icon="fa-solid fa-calendar-days"
                                                class="p-4" />
                         </div>
                         <div
-                             class="flex flex-col w-32 lg:w-64 p-3 bg-amber-400 rounded rounded-xl font-bold">
+                             class="flex flex-col justify-center w-40 lg:w-64 h-36 p-3 bg-amber-400 rounded-xl font-bold">
                             <small
-                                   class="mt-2 z-10 lg:text-3xl">{{ getDay($route.query.date) }}</small>
+                                   class="my-1 z-10 text-lg lg:text-3xl">{{ getDay($route.query.date) }}</small>
                             <small
-                                   class="lg:text-lg">{{ $route.query.date }}</small>
-                            <p class="lg:text-2xl lg:font-bold">9:00 - 10:30</p>
+                                   class="lg:text-lg my-1 text-lg">{{ $route.query.date }}</small>
+                            <p class="text-2xl lg:font-bold my-1">9:00 -
+                                10:30</p>
                         </div>
                     </div>
 
 
                     <div id="slots text-center"
-                         class="drop-shadow-md mb-7 relative">
+                         class="drop-shadow-md mb-7">
                         <div
-                             class="flex flex-col w-32 lg:w-64 p-3 bg-amber-400 rounded rounded-xl font-bold text-center items-center">
+                             class="flex flex-col w-40 lg:w-64 h-36 p-3 bg-amber-400 rounded-xl font-bold text-center items-center">
                             <img :src="image($route.query.room)"
                                  alt=""
-                                 class="mb-2 w-20 h-20"
+                                 class="mb-2 w-20 h-20 bg-white p-3 rounded-md"
                                  srcset="">
-                                 <hr>
-                            <strong class="text-2xl font-extrabold mt-2">Meeting Room</strong>
+                            <hr>
+                            <strong
+                                    class="lg:text-2xl font-extrabold mt-1">Meeting
+                                Room</strong>
 
                         </div>
                     </div>
@@ -52,7 +55,7 @@
                 </div>
 
 
-                <form class="h-full">
+                <form class="h-full w-full md:w-2/3 self-center">
                     <div class="mb-5">
                         <label for="name"
                                class="block text-sm font-medium text-gray-700 lg:text-2xl">Name</label>
@@ -108,7 +111,7 @@
                     </div>
 
                     <button
-                            class="drop-shadow-md md:p-3 p-2 bg-amber-400 hover:bg-amber-300 transition-colors duration-200 rounded rounded-xl w-full md:text-xl font-bold">Reserve</button>
+                            class="drop-shadow-md md:p-3 p-2 bg-amber-400 hover:bg-amber-300 transition-colors duration-200 rounded-xl w-full md:text-xl font-bold">Reserve</button>
 
                 </form>
             </div>
