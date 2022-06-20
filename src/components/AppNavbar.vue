@@ -11,12 +11,6 @@
   </nav>
 </template>
 
-<script>
-export default {
-
-}
-</script>
-
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@600&display=swap');
 

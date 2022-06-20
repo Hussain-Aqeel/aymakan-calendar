@@ -4,13 +4,3 @@
     <p>All rights reserved &copy; AyMakan Logistics 2022</p>
   </footer>
 </template>
-
-<script>
-export default {
-
-}
-</script>
-
-<style>
-
-</style>

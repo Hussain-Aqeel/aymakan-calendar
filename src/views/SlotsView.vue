@@ -1,5 +1,4 @@
 <template>
-  <WrapperViewVue>
     <div class="container mx-auto text-gray-700 h-full">
 
       <router-link to="/">
@@ -23,11 +22,11 @@
           <option selected
                   disabled
                   hidden> Select Room </option>
-          <option @click="changeRoom('Aymakan Meeting Room')"> AyMakan Room
+          <option @click="changeRoom('1')"> AyMakan Room
           </option>
-          <option @click="changeRoom('Smart Influence Meeting Room')"> Smart
+          <option @click="changeRoom('2')"> Smart
             Influence Room </option>
-          <option @click="changeRoom('General Meeting Room')"> General Room
+          <option @click="changeRoom('3')"> General Room
           </option>
         </select>
       </div>
@@ -35,27 +34,27 @@
       <div v-if="roomIsSelected()">
 
         {{ setTime() }}
+        
         <div
              class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
 
           <div v-for="index in 10"
                :key="index">
 
-            <SlotComponentVue :baseHour="printBaseHour()"
-                              :firstCheckboxLabel="printBaseHour()"
-                              :secondCheckboxLabel="printAfterHalfHourSlot()"
-                              :firstCheckboxName="printBaseHourName()"
-                              :secondCheckboxName="printAfterHalfHourName()"
-                              :morningOrNoon="setMorningOrNoon()"
-                              @setTimeSlot="setTimeSlot"
-                              @setSecondTimeSlot="setTimeSlot"
-                               />
+            <TimeSlot 
+              :baseHour="printBaseHour()"
+              :firstCheckboxLabel="printBaseHour()"
+              :secondCheckboxLabel="printAfterHalfHourSlot()"
+              :firstCheckboxName="printBaseHourName()"
+              :secondCheckboxName="printAfterHalfHourName()"
+              :morningOrNoon="setMorningOrNoon()"
+              @setTimeSlot="setTimeSlot"
+              @setSecondTimeSlot="setTimeSlot"
+            />
 
             {{ updateRandomDateValue(60) }}
 
           </div>
-
-          {{ setTime() }}
         </div>
 
         <footer class=" sticky bottom-1 p-2 flex justify-end">
@@ -72,17 +71,15 @@
       </div>
 
     </div>
-  </WrapperViewVue>
 </template>
 
 <script>
-import WrapperViewVue from './WrapperView.vue'
-import SlotComponentVue from '@/components/Slot-Component.vue';
+import TimeSlot from '@/components/TimeSlot.vue';
 import lib from 'date-and-time';
 import { ref } from 'vue';
 
 export default {
-    components: { WrapperViewVue, SlotComponentVue },
+    components: { TimeSlot },
     setup() {
 
       let randomDate = ref(new Date()); 
@@ -106,7 +103,6 @@ export default {
       }
 
       const room = ref("");
-      const check = ref(false);
       const time = ref([]);
 
       const changeRoom = (roomName) => {
@@ -123,10 +119,6 @@ export default {
 
       const roomIsSelected = () => {
         return room.value !== '' ? true : false;
-      }
-
-      const toggleChecked = () => {
-        return !check.value;
       }
 
       const add30Minutes = () => {
@@ -166,14 +158,12 @@ export default {
         return lib.format(dateObj, 'dddd, MMM DD');
       }
 
-      function setTimeSlot(timeSlot) {
-        check.value = toggleChecked();
-
-        if (check.value) {
-          console.log(`${timeSlot} is added to array`)
-
+      function setTimeSlot(timeSlot, addToArray) {
+        if (addToArray) {
+          time.value.push(timeSlot);
         } else {
-          console.log(`${timeSlot} is deleted from array`)
+          // delete item from array
+          time.value = time.value.filter(item => item !== timeSlot)
         }
       }
 

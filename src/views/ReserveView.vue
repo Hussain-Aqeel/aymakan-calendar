@@ -1,73 +1,72 @@
 <template>
-  <WrapperViewVue>
-    <div class="container mx-auto text-gray-700">
 
-      <div class="w-full flex justify-center">
-        <span class="w-48 md:w-80 flex justify-between items-center">
-          <button @click="previousWeek()">
-            <font-awesome-icon icon="fa-solid fa-chevron-left"
-                               class="p-4" />
-          </button>
-          <ul>
-            <li class="md:text-xl font-bold">
-              {{ displayedDate }}
-            </li>
-          </ul>
-          <button @click="nextWeek()">
-            <font-awesome-icon icon="fa-solid fa-chevron-right"
-                               class="p-4" />
-          </button>
-        </span>
-      </div>
+  <div class="container mx-auto text-gray-700">
 
-      <form action="">
+    <div class="w-full flex justify-center">
+      <span class="w-48 md:w-80 flex justify-between items-center">
+        <button @click="previousWeek()">
+          <font-awesome-icon icon="fa-solid fa-chevron-left"
+                              class="p-4" />
+        </button>
+        <ul>
+          <li class="md:text-xl font-bold">
+            {{ displayedDate }}
+          </li>
+        </ul>
+        <button @click="nextWeek()">
+          <font-awesome-icon icon="fa-solid fa-chevron-right"
+                              class="p-4" />
+        </button>
+      </span>
+    </div>
 
-        <div v-for="(day, index) in weekday"
-             v-bind:key="day.id">
+    <form action="">
+
+      <div v-for="(day, index) in weekday"
+            v-bind:key="day.id">
+        <div
+              v-if="lib.addDays(currentDate, index - currentDate.getDay()) < currentDate">
+
           <div
-               v-if="lib.addDays(currentDate, index - currentDate.getDay()) < currentDate">
+                class="drop-shadow-md outline outline-0 hover:outline-offset-2 rounded-md m-4 p-5 text-center md:text-xl bg-gray-200 flex items-center justify-between">
 
-            <div
-                 class="drop-shadow-md outline outline-0 hover:outline-offset-2 rounded-md m-4 p-5 text-center md:text-xl bg-gray-200 flex items-center justify-between">
+            <strong>{{ day.name }}</strong>
 
-              <strong>{{ day.name }}</strong>
-
-              <p class="text-xs md:text-sm"
-                 v-bind="currentDate">
-                {{ formatDate(setNextDay(currentDate, index - currentDate.getDay())) }}
-              </p>
-
-            </div>
-          </div>
-          <div v-else>
-            <router-link
-                         :to="'/slots?date=' +  
-                          formatQueryDate(getNextDay(currentDate, index - currentDate.getDay()))">
-              <div
-                   class="drop-shadow-md outline outline-0 hover:outline-offset-2 rounded-md m-4 p-5 text-center md:text-xl bg-amber-400 hover:bg-amber-300 hover:cursor-pointer flex items-center justify-between">
-
-                <strong>{{ day.name }}</strong>
-                <p class="text-xs md:text-sm">
-                  {{ formatDate(getNextDay(currentDate, index - currentDate.getDay())) }}
-                </p>
-              </div>
-            </router-link>
+            <p class="text-xs md:text-sm"
+                v-bind="currentDate">
+              {{ formatDate(setNextDay(currentDate, index - currentDate.getDay())) }}
+            </p>
 
           </div>
         </div>
-      </form>
-    </div>
-  </WrapperViewVue>
+        <div v-else>
+          <router-link
+                        :to="'/slots?date=' +  
+                        formatQueryDate(getNextDay(currentDate, index - currentDate.getDay()))">
+            <div
+                  class="drop-shadow-md outline outline-0 hover:outline-offset-2 rounded-md m-4 p-5 text-center md:text-xl bg-amber-400 hover:bg-amber-300 hover:cursor-pointer flex items-center justify-between">
+
+              <strong>{{ day.name }}</strong>
+              <p class="text-xs md:text-sm">
+                {{ formatDate(getNextDay(currentDate, index - currentDate.getDay())) }}
+              </p>
+            </div>
+          </router-link>
+
+        </div>
+      </div>
+    </form>
+  </div>
+
 </template>
 
 <script>
-import WrapperViewVue from './WrapperView.vue';
 import lib from 'date-and-time';
 import { ref } from 'vue';
 
 export default {
   name: "HomeView",
-  components: { WrapperViewVue },
+  
   setup() {
     const weekday = 
       [
