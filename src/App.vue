@@ -2,9 +2,10 @@
   <app-wrapper>
     <router-view v-slot="{Component}">
       <!-- Use any custom transition and fallback to `fade` -->
-      <transition name="slide" mode="out-in">
+      <transition name="slide"
+                  mode="out-in">
         <component :is="Component"
-                   :key="$route.path" />
+                    :key="$route.path" />
       </transition>
     </router-view>
   </app-wrapper>

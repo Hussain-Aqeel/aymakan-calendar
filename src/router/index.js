@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import ReserveView from '../views/ReserveView.vue';
 import ReservationView from '../views/ReservationView.vue';
+import ModifyReservationView from '../views/ModifyReservationView.vue';
 import SlotsView from '../views/SlotsView.vue';
 import WelcomeView from '../views/WelcomeView.vue';
 import CalendarView from '../views/CalendarView.vue';
@@ -33,7 +34,11 @@ const routes = [
       room: route.query.room,
       // time: route.query.time
     })
-
+  },
+  {
+    path: '/reservation/:id',
+    name: 'modifyReservation',
+    component: ModifyReservationView
   },
   {
     path: '/slots',
@@ -46,7 +51,13 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if(savedPosition) {
+      return savedPosition;
+    }
+    return { left: 0, top: 0 }
+  }
 })
 
 export default router

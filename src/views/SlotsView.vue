@@ -135,7 +135,7 @@ export default {
 
       // to use it in the id and name of the checkbox to take it // as a query string
       const printBaseHourName = () => {
-        return convertTo12Hours(randomDate.value.getHours()) + String(randomDate.value.getMinutes()).padStart(2, '0');
+        return String(convertTo12Hours(randomDate.value.getHours())).padStart(2, '0') + String(randomDate.value.getMinutes()).padStart(2, '0');
       }
 
       const printAfterHalfHourSlot = () => {
@@ -144,7 +144,7 @@ export default {
 
       // to use it in the id and name of the checkbox to take it // as a query string
       const printAfterHalfHourName = () => {
-        return convertTo12Hours(randomDate.value.getHours()) + String(add30Minutes()).padStart(2, '0')
+        return String(convertTo12Hours(randomDate.value.getHours())).padStart(2, 0) + String(add30Minutes()).padStart(2, '0')
       }
 
       const getSlot = () => {

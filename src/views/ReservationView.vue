@@ -17,9 +17,8 @@
             <div id="slots"
                  class="drop-shadow-md mb-7 relative">
                 <div class="absolute -left-4 -top-4 bg-amber-400 rounded-full">
-                    <font-awesome-icon 
-                        icon="fa-solid fa-calendar-days"
-                        class="p-4 lg:text-lg" />
+                    <font-awesome-icon icon="fa-solid fa-calendar-days"
+                                       class="p-4 lg:text-lg" />
                 </div>
                 <div
                      class="flex flex-col justify-center w-44 lg:w-64 h-40 p-3 bg-amber-400 rounded-xl font-bold">
@@ -53,14 +52,16 @@
 
         <div class="p-10 w-full mt-14 flex flex-col items-center">
 
-            <form class="h-full w-full lg:w-2/3">
+            <form @submit.prevent="handleSubmit"
+                  class="h-full w-full lg:w-2/3"
+                  data-netlify="true"
+                  data-netlify-recaptcha="true">
                 <div class="mb-5">
                     <label for="name"
                            class="text-sm font-medium text-gray-700 lg:text-2xl">Name</label>
                     <div class="mt-1 border-gray-300">
                         <input type="text"
-                               name="name"
-                               id="name"
+                               v-model="name"
                                class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
                              lg:text-2xl focus:outline-amber-500">
                     </div>
@@ -69,11 +70,9 @@
                 <div class="mb-5">
                     <label for="name"
                            class=" text-sm font-medium text-gray-700 lg:text-2xl">Email</label>
-                    <div
-                         class="mt-1 border-gray-300 ">
+                    <div class="mt-1 border-gray-300 ">
                         <input type="email"
-                               name="name"
-                               id="name"
+                               v-model="email"
                                class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
                              lg:text-2xl focus:outline-amber-500">
                     </div>
@@ -83,11 +82,9 @@
                     <label for="name"
                            class=" text-sm font-medium text-gray-700 lg:text-2xl">Meeting
                         title</label>
-                    <div
-                         class="mt-1 border-gray-300">
+                    <div class="mt-1 border-gray-300">
                         <input type="text"
-                               name="name"
-                               id="name"
+                               v-model="title"
                                class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
                              lg:text-2xl focus:outline-amber-500">
                     </div>
@@ -99,15 +96,14 @@
                         description / agenda</label>
                     <div class="mt-1">
                         <textarea rows="4"
-                                  name="comment"
-                                  id="comment"
+                                  v-model="description"
                                   class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
                              lg:text-2xl focus:outline-amber-500"></textarea>
                     </div>
                 </div>
 
-                <button
-                        class="drop-shadow-md md:p-3 p-2 bg-amber-400 hover:bg-amber-300 transition-colors duration-200 rounded-xl w-full md:text-xl font-bold">Reserve</button>
+                <button class="drop-shadow-md md:p-3 p-2 bg-amber-400 hover:bg-amber-300 transition-colors duration-200 rounded-xl w-full md:text-xl font-bold"
+                        type="submit">Reserve</button>
 
             </form>
         </div>
@@ -118,10 +114,38 @@
 <script>
 import lib from 'date-and-time';
 import { ref } from '@vue/reactivity';
+import { useRoute, useRouter } from 'vue-router'
+import { appFirestore } from '@/firebase/config';
+import { handler } from '../../functions/function-sendEmail/function-sendEmail';
+
 export default {
     setup() {
 
-        
+        const name = ref('');
+        const email = ref('');
+        const title = ref('');
+        const description = ref('');
+
+        const route = useRoute();
+        const router = useRouter();
+
+        const handleSubmit = async (event) => {
+            const reservation = {
+                date: route.query.date,
+                email: email.value,
+                meeting_desc: description.value,
+                meeting_title: title.value,
+                name: name.value,
+                slots: route.query.time
+            }
+
+            appFirestore.collection('reservations').add(reservation);
+
+            // to send confirmation email
+            handler(event)
+
+            router.push({ name: 'welcome' })
+        }
 
         const getDay = (date) => {
             const arr = date.split("-");
@@ -147,6 +171,11 @@ export default {
         return {
             getDay,
             image,
+            handleSubmit,
+            name, 
+            email, 
+            title, 
+            description,
             imageBackground,
             imageWidth
         }
