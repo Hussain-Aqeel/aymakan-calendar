@@ -52,7 +52,7 @@
 
         <div class="p-10 w-full mt-14 flex flex-col items-center">
 
-            <form @submit.prevent="handleSubmit"
+            <form @submit.prevent="handleSubmit($event)"
                   class="h-full w-full lg:w-2/3"
                   data-netlify="true"
                   data-netlify-recaptcha="true">
