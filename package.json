@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint"  
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.1",
@@ -17,9 +17,12 @@
     "date-and-time": "^2.3.1",
     "firebase": "^9.8.3",
     "lodash": "^4.17.21",
-    "netlify-lambda": "^2.0.15",
+    "node-polyfill-webpack-plugin": "^1.1.4",
     "vue": "^3.2.13",
-    "vue-router": "^4.0.3"
+    "vue-router": "^4.0.3",
+    "@sendgrid/mail": "^7.7.0",
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.21.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

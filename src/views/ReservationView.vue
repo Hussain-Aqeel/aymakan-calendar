@@ -52,10 +52,8 @@
 
         <div class="p-10 w-full mt-14 flex flex-col items-center">
 
-            <form @submit.prevent="handleSubmit($event)"
-                  class="h-full w-full lg:w-2/3"
-                  data-netlify="true"
-                  data-netlify-recaptcha="true">
+            <form @submit.prevent="callFunction"
+                  class="h-full w-full lg:w-2/3">
                 <div class="mb-5">
                     <label for="name"
                            class="text-sm font-medium text-gray-700 lg:text-2xl">Name</label>
@@ -114,9 +112,10 @@
 <script>
 import lib from 'date-and-time';
 import { ref } from '@vue/reactivity';
-import { useRoute, useRouter } from 'vue-router'
-import { appFirestore } from '@/firebase/config';
-import { handler } from '../../functions/function-sendEmail/function-sendEmail';
+// import { useRoute, useRouter } from 'vue-router'
+// import { functions } from '@/firebase/config';
+// import firebase from 'firebase/compat/app';
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 export default {
     setup() {
@@ -126,26 +125,40 @@ export default {
         const title = ref('');
         const description = ref('');
 
-        const route = useRoute();
-        const router = useRouter();
+        // const route = useRoute();
+        // const router = useRouter();
+        const callFunction = async () => {
+            const functions = getFunctions();
+            const emailMessage = httpsCallable(functions, 'emailMessage');
+            emailMessage()
+                .then((result) => {
+                    // Read result of the Cloud Function.
+                    /** @type {any} */
+                    const data = result.data;
+                    console.log(data)
+                });
+        };
 
-        const handleSubmit = async (event) => {
-            const reservation = {
-                date: route.query.date,
-                email: email.value,
-                meeting_desc: description.value,
-                meeting_title: title.value,
-                name: name.value,
-                slots: route.query.time
-            }
+        // const handleSubmit = async () => {
+        //     const reservation = {
+        //         date: route.query.date,
+        //         email: email.value,
+        //         meeting_desc: description.value,
+        //         meeting_title: title.value,
+        //         name: name.value,
+        //         slots: route.query.time
+        //     }
 
-            appFirestore.collection('reservations').add(reservation);
+        //     await appFirestore.collection('reservations').add(reservation);
 
-            // to send confirmation email
-            handler(event)
+        //     // // to send confirmation email
+        //     // const result = firebase.functions().httpsCallable('emailMessage');
 
-            router.push({ name: 'welcome' })
-        }
+        //     // const finalResult = await result()
+
+        //     // console.log(finalResult);
+        //     router.push({ name: 'welcome' })
+        // }
 
         const getDay = (date) => {
             const arr = date.split("-");
@@ -171,7 +184,8 @@ export default {
         return {
             getDay,
             image,
-            handleSubmit,
+            // handleSubmit,
+            callFunction,
             name, 
             email, 
             title, 
