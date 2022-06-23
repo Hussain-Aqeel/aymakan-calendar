@@ -3,6 +3,7 @@ import { getFunctions } from 'firebase/functions'
 import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
 
+//Firebase config
 const firebaseConfig = {
   apiKey: process.env.VUE_APP_FIREBASE_KEY,
   authDomain: "calendar-eb32c.firebaseapp.com",
