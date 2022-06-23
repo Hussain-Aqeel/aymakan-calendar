@@ -1,4 +1,5 @@
 import firebase from 'firebase/compat/app';
+import { getAnalytics } from "firebase/analytics";
 import { getFunctions } from 'firebase/functions'
 import 'firebase/compat/firestore';
 import 'firebase/compat/functions';
@@ -21,8 +22,10 @@ firebase.initializeApp(firebaseConfig)
 const app = firebase.app();
 const appFirestore = firebase.firestore();
 const functions = getFunctions(app);
+const analytics = getAnalytics(app);
+
 
 // init cloud functions
 // const functions = firebase.functions();
 
-export { appFirestore, functions }
+export { appFirestore, functions, analytics }
