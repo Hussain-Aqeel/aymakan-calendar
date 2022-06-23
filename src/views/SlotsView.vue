@@ -1,76 +1,76 @@
 <template>
-    <div class="container mx-auto text-gray-700 h-full">
+  <div class="container mx-auto text-gray-700 h-full">
 
-      <router-link to="/">
-        <span class="flex items-center hover:text-gray-500 md:text-2xl ml-10">
-          <font-awesome-icon icon="fa-solid fa-square-caret-left"
-                             class="mr-1" />
-          <p>Back</p>
-        </span>
-      </router-link>
-      <div class="text-lg mt-6 font-bold md:text-3xl text-center w-full mb-4">
-        <font-awesome-icon icon="fa-solid fa-calendar-check" />
-        <p class="inline ml-3">
-          {{ formatDate($route.query.date) }}</p>
-      </div>
-
-
-      <div class="w-full flex justify-center mt-9 h-full">
-        <select class="outline-none border-none bg-gray-200 cursor-pointer appearance-none py-2 px-4 w-64 text-center focus:ring-amber-600 focus:ring-2 focus:outline-amber-"
-                name=""
-                id="">
-          <option selected
-                  disabled
-                  hidden> Select Room </option>
-          <option @click="changeRoom('0')"> AyMakan Room
-          </option>
-          <option @click="changeRoom('1')"> Smart
-            Influence Room </option>
-          <option @click="changeRoom('2')"> General Room
-          </option>
-        </select>
-      </div>
-
-      <div v-if="roomIsSelected()">
-
-        {{ setTime() }}
-        
-        <div
-             class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
-
-          <div v-for="index in 10"
-               :key="index">
-
-            <TimeSlot 
-              :baseHour="printBaseHour()"
-              :firstCheckboxLabel="printBaseHour()"
-              :secondCheckboxLabel="printAfterHalfHourSlot()"
-              :firstCheckboxName="printBaseHourName()"
-              :secondCheckboxName="printAfterHalfHourName()"
-              :morningOrNoon="setMorningOrNoon()"
-              @setTimeSlot="setTimeSlot"
-              @setSecondTimeSlot="setTimeSlot"
-            />
-
-            {{ updateRandomDateValue(60) }}
-
-          </div>
-        </div>
-
-        <footer class=" sticky bottom-1 p-2 flex justify-end">
-          <router-link class="floating-btn"
-                       :to="'/reservation?date=' + $route.query.date + '&room=' + getRoom() + '&time=' + getSlotTime()">
-            Reserve
-            now
-            <span class="ml-2">
-              <font-awesome-icon icon="fa-solid fa-arrow-right-long"
-                                 class=" bg-gray-500 p-1 rounded-full" />
-            </span>
-          </router-link>
-        </footer>
-      </div>
-
+    <router-link to="/">
+      <span class="flex items-center hover:text-gray-500 md:text-2xl ml-10">
+        <font-awesome-icon icon="fa-solid fa-square-caret-left"
+                           class="mr-1" />
+        <p>Back</p>
+      </span>
+    </router-link>
+    <div class="text-lg mt-6 font-bold md:text-3xl text-center w-full mb-4">
+      <font-awesome-icon icon="fa-solid fa-calendar-check" />
+      <p class="inline ml-3">
+        {{ formatDate($route.query.date) }}</p>
     </div>
+
+
+    <div class="w-full flex justify-center mt-9 h-full">
+
+      <select name="LeaveType"
+              @change="onRoomChange($event)"
+              class="form-control outline-none border-none bg-gray-200 cursor-pointer appearance-none py-2 px-4 w-64 text-center focus:ring-amber-600 focus:ring-2">
+        <option selected
+                disabled
+                hidden
+                value=""> Select Room </option>
+        <option value="0"> AyMakan Room
+        </option>
+        <option value="1"> Smart
+          Influence Room </option>
+        <option value="2"> General Room
+        </option>
+      </select>
+    </div>
+
+    <div v-if="roomIsSelected()">
+
+      {{ setTime() }}
+
+      <div
+           class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+
+        <div v-for="index in 10"
+             :key="index">
+
+          <TimeSlot :baseHour="printBaseHour()"
+                    :firstCheckboxLabel="printBaseHour()"
+                    :secondCheckboxLabel="printAfterHalfHourSlot()"
+                    :firstCheckboxName="printBaseHourName()"
+                    :secondCheckboxName="printAfterHalfHourName()"
+                    :morningOrNoon="setMorningOrNoon()"
+                    @setTimeSlot="setTimeSlot"
+                    @setSecondTimeSlot="setTimeSlot" />
+
+          {{ updateRandomDateValue(60) }}
+
+        </div>
+      </div>
+
+      <footer class=" sticky bottom-1 p-2 flex justify-end">
+        <router-link class="floating-btn"
+                     :to="'/reservation?date=' + $route.query.date + '&room=' + getRoom() + '&time=' + getSlotTime()">
+          Reserve
+          now
+          <span class="ml-2">
+            <font-awesome-icon icon="fa-solid fa-arrow-right-long"
+                               class=" bg-gray-500 p-1 rounded-full" />
+          </span>
+        </router-link>
+      </footer>
+    </div>
+
+  </div>
 </template>
 
 <script>
@@ -105,8 +105,8 @@ export default {
       const room = ref("");
       const time = ref([]);
 
-      const changeRoom = (roomName) => {
-        room.value = roomName;
+      const onRoomChange = (e) => {
+        room.value = e.target.value;
       }
 
       const getRoom = () => {
@@ -118,7 +118,7 @@ export default {
       }
 
       const roomIsSelected = () => {
-        return room.value !== '' ? true : false;
+        return room.value != '';
       }
 
       const add30Minutes = () => {
@@ -171,7 +171,7 @@ export default {
         // functions
         updateRandomDateValue,
         formatDate,
-        changeRoom,
+        onRoomChange,
         roomIsSelected,
         setTime,
         setMorningOrNoon,
