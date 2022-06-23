@@ -22,11 +22,11 @@
           <option selected
                   disabled
                   hidden> Select Room </option>
-          <option @click="changeRoom('1')"> AyMakan Room
+          <option @click="changeRoom('0')"> AyMakan Room
           </option>
-          <option @click="changeRoom('2')"> Smart
+          <option @click="changeRoom('1')"> Smart
             Influence Room </option>
-          <option @click="changeRoom('3')"> General Room
+          <option @click="changeRoom('2')"> General Room
           </option>
         </select>
       </div>

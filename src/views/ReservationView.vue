@@ -114,9 +114,8 @@
 <script>
 import lib from 'date-and-time';
 import { ref } from '@vue/reactivity';
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router';
 import { appFirestore } from '@/firebase/config';
-import { handler } from '../../functions/function-sendEmail/function-sendEmail';
 
 export default {
     setup() {
@@ -129,20 +128,20 @@ export default {
         const route = useRoute();
         const router = useRouter();
 
-        const handleSubmit = async (event) => {
+        
+        const handleSubmit = async () => {
             const reservation = {
                 date: route.query.date,
-                email: email.value,
-                meeting_desc: description.value,
-                meeting_title: title.value,
                 name: name.value,
-                slots: route.query.time
+                email: email.value,
+                room: route.query.room,
+                meeting_title: title.value,  
+                meeting_desc: description.value,
+                slots: route.query.time,
+                baseUrl: window.location.hostname + '/reservation/', 
             }
 
             appFirestore.collection('reservations').add(reservation);
-
-            // to send confirmation email
-            handler(event)
 
             router.push({ name: 'welcome' })
         }
@@ -157,7 +156,7 @@ export default {
         let imageWidth = ref('');
 
         const image = (img) => {
-            if(img === "2"){
+            if(img === "1"){
                 imageBackground.value = 'bg-black ';
                 imageWidth.value = 'lg:w-64 w-32 '
                 return "/images/smartinfluence.png"

@@ -1,40 +1,44 @@
 // Firebase config
+// The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 const functions = require('firebase-functions');
+// The Firebase Admin SDK to access Firestore.
 const admin = require('firebase-admin');
-
 const sgMail = require('@sendgrid/mail');
 
 admin.initializeApp();
 
-const {
-  VUE_APP_API_KEY,
-  VUE_APP_TEMPLATE_ID
-} = process.env
 
-sgMail.setApiKey(VUE_APP_API_KEY);
+const API_KEY = functions.config().sendgrid.key;
+const TEMPLATE_ID = functions.config().sendgrid.template;
 
-const confirmationEmail = functions.https.onCall(async (request, response) => {
 
-  const msg = {
-    to: request.email,
-    from: 'h.aljassim.1999@gmail.com',
-    templateId: VUE_APP_TEMPLATE_ID,
-    dynamic_template_data: {
-      subject: request.subject,
-      name: request.name,
-      email: request.email,
-      room: request.room,
-      title: request.title,
-      description: request.description,
+sgMail.setApiKey(API_KEY);
+
+exports.createReservation = functions.firestore
+  .document('reservations/{reservationId}')
+  .onCreate((snap, context) => {
+    // Get an object representing the document
+    // e.g. {'name': 'Marie', 'age': 66}
+    const newValue = snap.data();
+
+    const reservationId = context.params.reservationId;
+
+    const msg = {
+      to: newValue.email,
+      from: 'h.aljassim@aymakan.com.sa',
+      templateId: TEMPLATE_ID,
+      dynamic_template_data: {
+        subject: `Thank you ${newValue.name}, your reservation is confirmed.`,
+        name: newValue.name,
+        email: newValue.email,
+        room: newValue.room,
+        title: newValue.meeting_title,
+        description: newValue.meeting_desc,
+        date: newValue.date,
+        time: newValue.slots,
+        reservationURL: newValue.baseUrl + reservationId,
+      }
     }
-  }
-
-  await sgMail.send(msg);
-
-  console.log(response)
-
-  return { success: true };
-
-});
-
-module.exports = { confirmationEmail };
+    
+    return sgMail.send(msg);
+  });

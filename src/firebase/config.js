@@ -1,21 +1,27 @@
 import firebase from 'firebase/compat/app';
+import { getFunctions } from 'firebase/functions'
 import 'firebase/compat/firestore';
+import 'firebase/compat/functions';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD4mt9QUlQhDoZ5wMRXmKr329RhVmpiRyU",
-  authDomain: "aymakan-vue-calendar.firebaseapp.com",
-  projectId: "aymakan-vue-calendar",
-  storageBucket: "aymakan-vue-calendar.appspot.com",
-  messagingSenderId: "133494948881",
-  appId: "1:133494948881:web:6ea15b10c8077d8e769db0"
+  apiKey: process.env.VUE_APP_FIREBASE_KEY,
+  authDomain: "calendar-eb32c.firebaseapp.com",
+  projectId: "calendar-eb32c",
+  storageBucket: "calendar-eb32c.appspot.com",
+  messagingSenderId: "1014156027268",
+  appId: "1:1014156027268:web:65a3448365d5829edca9d1",
+  measurementId: "G-EBVV89RSN0"
 };
 
-
 // init firebase
-firebase.initializeApp(firebaseConfig);
-
+firebase.initializeApp(firebaseConfig)
 
 // init firestore service
+const app = firebase.app();
 const appFirestore = firebase.firestore();
+const functions = getFunctions(app);
 
-export { appFirestore }
+// init cloud functions
+// const functions = firebase.functions();
+
+export { appFirestore, functions }
