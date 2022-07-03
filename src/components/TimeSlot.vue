@@ -31,7 +31,10 @@ const props = defineProps({
   addToArray: {
     type: Boolean,
   },
-  disableCheckbox: {
+  isFirstCheckboxDisabled: {
+    type: Boolean,
+  },
+  isSecondCheckboxDisabled: {
     type: Boolean,
   }
 });
@@ -59,15 +62,17 @@ const secondCheckboxModal = computed({
   },
 });
 
-const isFirstCheckboxDisabled = () => {
-  let firstCheckboxValue = props.firstCheckboxLabel
-  emit('isFirstCheckboxDisabled', firstCheckboxValue)
-}
 
-const isSecondCheckboxDisabled = () => {
-  let secondCheckboxValue = props.secondCheckboxLabel
-  emit('isFirstCheckboxDisabled', secondCheckboxValue)
-}
+
+// const isFirstCheckboxDisabled = () => {
+//   let firstCheckboxValue = props.firstCheckboxLabel
+//   emit('isFirstCheckboxDisabled', firstCheckboxValue)
+// }
+
+// const isSecondCheckboxDisabled = () => {
+//   let secondCheckboxValue = props.secondCheckboxLabel
+//   emit('isSecondCheckboxDisabled', secondCheckboxValue)
+// }
 
 
 </script>

@@ -35,29 +35,25 @@
       </div>
 
       <div v-if="roomIsSelected()">
-
-        {{ setTime() }}
-
-        <div
+        <div v-if="timeSlots"
              class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
 
-          <div v-for="index in 10"
-               :key="index">
-
-            <TimeSlot :baseHour="printBaseHour()"
-                      :firstCheckboxLabel="printBaseHour()"
-                      :secondCheckboxLabel="printAfterHalfHourSlot()"
-                      :firstCheckboxName="printBaseHourName()"
-                      :secondCheckboxName="printAfterHalfHourName()"
+          <div v-for="slot in timeSlots.rooms.first.slots"
+               :key="slot">
+            <TimeSlot :baseHour="slot.base.slot"
+                      :firstCheckboxLabel="slot.base.slot"
+                      :secondCheckboxLabel="slot.half.slot"
+                      :firstCheckboxName="slot.base.slot.replace(':', '')"
+                      :secondCheckboxName="slot.half.slot.replace(':', '')"
                       :morningOrNoon="setMorningOrNoon()"
-                      @isFirstCheckboxDisabled="disableReservedSlots"
-                      @isSecondCheckboxDisabled="disableReservedSlots"
+                      :isFirstCheckboxDisabled="slot.base.reserved"
+                      :isSecondCheckboxDisabled="slot.half.reserved"
                       @setTimeSlot="setTimeSlot"
                       @setSecondTimeSlot="setTimeSlot" />
-
-            {{ updateRandomDateValue(60) }}
-
           </div>
+        </div>
+        <div v-else>
+          <ClipLoader></ClipLoader>
         </div>
 
         <footer class="sticky bottom-1 p-2 flex justify-end"
@@ -83,11 +79,12 @@ import AppWrapper from '../components/AppWrapper.vue'
 import TimeSlot from '@/components/TimeSlot.vue';
 import lib from 'date-and-time';
 import { ref } from 'vue';
-import { useRoute } from 'vue-router'
-import getReservations from '../composables/getReservations';
+import { useRoute } from 'vue-router';
+import getTimeSlots from '../composables/getTimeSlots';
+import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
 
 export default {
-    components: { TimeSlot, AppWrapper },
+    components: { TimeSlot, AppWrapper, ClipLoader },
     setup() {
 
       // refs
@@ -96,13 +93,11 @@ export default {
       const time = ref([]);
 
       const route = useRoute();
-      
-      
-      // initializing time at 8:00 AM
-      const setTime = () => {
-        date.value.setHours(8);
-        date.value.setMinutes(0);
-      }
+
+      // get time slots and print cards
+      const { timeSlots, load, error } = getTimeSlots(route.query.date);
+
+      load();
       
       // Print PM or AM after the time slot
       const setMorningOrNoon = () => {
@@ -130,32 +125,6 @@ export default {
         return room.value != '';
       }
 
-      const add30Minutes = () => {
-        return date.value.getMinutes() + 30
-      }
-
-      const updateRandomDateValue = (value) => {
-        date.value.setMinutes(date.value.getMinutes() + value)
-      }
-
-      const printBaseHour = () => {
-        return convertTo12Hours(date.value.getHours()) + ':' + String(date.value.getMinutes()).padStart(2, '0');
-      }
-
-      // to use it in the id and name of the checkbox to take it // as a query string
-      const printBaseHourName = () => {
-        return String(convertTo12Hours(date.value.getHours())).padStart(2, '0') + String(date.value.getMinutes()).padStart(2, '0');
-      }
-
-      const printAfterHalfHourSlot = () => {
-        return convertTo12Hours(date.value.getHours()) + ':' + String(add30Minutes()).padStart(2, '0')
-      }
-
-      // to use it in the id and name of the checkbox to take it // as a query string
-      const printAfterHalfHourName = () => {
-        return String(convertTo12Hours(date.value.getHours())).padStart(2, 0) + String(add30Minutes()).padStart(2, '0')
-      }
-
       const getSlot = () => {
         return convertTo12Hours(date.value.getHours()) + String(date.value.getMinutes()).padStart(2, '0');
       }
@@ -167,29 +136,6 @@ export default {
         return lib.format(dateObj, 'dddd, MMM DD');
       }
 
-      const disableReservedSlots = (timeSlot) => {
-        const { reservations, load, error } = getReservations();
-
-        load();
-
-        let result = true;
-
-          reservations.value.forEach(reservation => {
-            reservation.slots.forEach(slot => {
-              console.log(route.query.date)
-              console.log(reservation.date)
-              console.log(reservation.room)
-              console.log(slot)
-
-              if (route.query.date == reservation.date & timeSlot == slot & reservation.room === room.value) {
-
-                result = false;
-              }
-            })
-          });
-        
-        return result;
-      }
 
       function setTimeSlot(timeSlot, addToArray) {
         if (addToArray) {
@@ -223,24 +169,19 @@ export default {
 
       return {
         // functions
-        updateRandomDateValue,
         formatDate,
         onRoomChange,
         roomIsSelected,
-        setTime,
         setMorningOrNoon,
-        printBaseHour,
-        printAfterHalfHourSlot,
-        printBaseHourName,
-        printAfterHalfHourName,
         getRoom,
         setTimeSlot,
         getSortedSlots,
         getSlot,
-        disableReservedSlots,
         // variables
         date,
-        time
+        time,
+        timeSlots,
+        error,
       }
 
     }
