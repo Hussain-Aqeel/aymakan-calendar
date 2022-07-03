@@ -23,9 +23,12 @@ const app = firebase.app();
 const appFirestore = firebase.firestore();
 const functions = getFunctions(app);
 const analytics = getAnalytics(app);
+// this function will be invoked to help us order the documents 
+// based on created_at property
+const timestamp = firebase.firestore.FieldValue.serverTimestamp;
 
 
 // init cloud functions
 // const functions = firebase.functions();
 
-export { appFirestore, functions, analytics }
+export { appFirestore, functions, analytics, timestamp }

@@ -7,7 +7,9 @@ const getReservations = () => {
 
   const load = async () => {
     try {
-      const res = await appFirestore.collection('reservations').get();
+      const res = await appFirestore.collection('reservations')
+        .orderBy('created_at', 'desc')
+        .get();
 
       reservations.value = res.docs.map(doc => {
         return { ...doc.data(), id: doc.id }

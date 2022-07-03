@@ -1,22 +1,17 @@
 <template>
-  <app-wrapper>
-    <router-view v-slot="{Component}">
-      <!-- Use any custom transition and fallback to `fade` -->
-      <transition name="slide"
-                  mode="out-in">
-        <component :is="Component"
-                    :key="$route.path" />
-      </transition>
-    </router-view>
-  </app-wrapper>
+  <router-view v-slot="{Component}">
+    <!-- Use any custom transition and fallback to `fade` -->
+    <transition name="slide"
+                mode="out-in">
+      <component :is="Component"
+                  :key="$route.path" />
+    </transition>
+  </router-view>
 </template>
 
 <script>
-import AppWrapper from './components/AppWrapper.vue'
 
-export default {
-    components: { AppWrapper }
-}
+export default { }
 </script>
 <style>
 .slide-enter-active,

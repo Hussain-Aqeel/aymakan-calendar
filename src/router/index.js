@@ -1,10 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import ReserveView from '../views/ReserveView.vue';
 import ReservationView from '../views/ReservationView.vue';
-import ModifyReservationView from '../views/ModifyReservationView.vue';
+import SingleReservationView from '../views/SingleReservationView.vue';
 import SlotsView from '../views/SlotsView.vue';
 import WelcomeView from '../views/WelcomeView.vue';
 import CalendarView from '../views/CalendarView.vue';
+import ErrorView from '../views/ErrorView.vue';
 
 const routes = [
   {
@@ -36,9 +37,10 @@ const routes = [
     })
   },
   {
-    path: '/reservation/:id',
+    path: '/reservations/:id',
     name: 'modifyReservation',
-    component: ModifyReservationView
+    component: SingleReservationView,
+    props: true,
   },
   {
     path: '/slots',
@@ -47,6 +49,11 @@ const routes = [
     meta: { transitionName: 'slide' },
     props: route => ({ query: route.query.date })
   },
+  {
+    path: '/error',
+    name: 'error',
+    component: ErrorView,
+  }
 ]
 
 const router = createRouter({

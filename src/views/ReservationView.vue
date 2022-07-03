@@ -1,149 +1,179 @@
 <template>
-    <div class="md:container mx-auto text-gray-700 min-h-full p-6 mb-10">
+    <app-wrapper>
+        <div class="md:container mx-auto text-gray-700 min-h-[60vh] p-6 mb-10">
 
-        <router-link :to="'/slots?date=' + $route.query.date"
-                     class="self-start">
-            <span
-                  class="flex items-center hover:text-gray-500 md:text-2xl ml-10">
-                <font-awesome-icon icon="fa-solid fa-square-caret-left"
-                                   class="mr-1" />
-                <p>Back</p>
-            </span>
-        </router-link>
+            <router-link :to="'/slots?date=' + $route.query.date"
+                         class="self-start">
+                <span
+                      class="flex items-center hover:text-gray-500 md:text-2xl ml-10">
+                    <font-awesome-icon icon="fa-solid fa-square-caret-left"
+                                       class="mr-1" />
+                    <p>Back</p>
+                </span>
+            </router-link>
 
 
-        <div
-             class="flex items-center space-x-8 lg:space-x-14 justify-center mt-20">
-            <div id="slots"
-                 class="drop-shadow-md mb-7 relative">
-                <div class="absolute -left-4 -top-4 bg-amber-400 rounded-full">
-                    <font-awesome-icon icon="fa-solid fa-calendar-days"
-                                       class="p-4 lg:text-lg" />
-                </div>
-                <div
-                     class="flex flex-col justify-center w-44 lg:w-64 h-40 p-3 bg-amber-400 rounded-xl font-bold">
-                    <small
-                           class="mt-4 mb-1 z-10 text-lg lg:text-2xl">{{ getDay($route.query.date) }}</small>
-                    <small
-                           class="lg:text-2xl my-1 text-lg">{{ $route.query.date }}</small>
-                    <p class="text-2xl lg:text-3xl lg:font-bold my-1">9:00 -
-                        10:30</p>
+            <div
+                 class="flex items-center space-x-8 lg:space-x-14 justify-center mt-20 text-center">
+                <div id="slots"
+                     class="drop-shadow-md mb-7 relative">
+                    <div
+                         class="absolute -left-4 -top-4 bg-amber-400 rounded-full">
+                        <font-awesome-icon icon="fa-solid fa-calendar-days"
+                                           class="p-4 lg:text-lg" />
+                    </div>
+                    <div
+                         class="justify-center lg:w-80 h-57 p-3 bg-amber-400 rounded-xl font-bold">
+                        <div
+                             class="mb-3 mt-5 border-b-2 border-black border-opacity-10">
+                            <span
+                                  class="font-bold block pb-4">{{ printMeetingRoom($route.query.room) }}</span>
+                        </div>
+                        <img :src="image($route.query.room)"
+                             alt="company logo"
+                             class="my-6 h-30 p-3 rounded-md bg-white lg:w-80 w-60">
+                        <div
+                             class="mb-3 border-t border-2 border-black border-opacity-10 rounded-lg">
+                        </div>
+                        <small
+                               class="mt-4 z-10 text-2xl lg:text-3xl">{{ getDay($route.query.date) }}</small>
+                    </div>
                 </div>
             </div>
 
 
-            <div id="slots text-center mr-4"
-                 class="drop-shadow-md mb-7">
-                <div
-                     class="flex flex-col w-40 lg:w-64 h-40 p-3 bg-amber-400 rounded-xl font-bold text-center items-center">
-                    <img :src="image($route.query.room)"
-                         alt=""
-                         :class="'mb-2 h-20 p-3 rounded-md ' + imageBackground + imageWidth"
-                         srcset="">
-                    <hr>
-                    <strong class="lg:text-2xl font-bold mt-1">Meeting
-                        Room</strong>
+            <div class="p-5 w-full mt-5 flex flex-col items-center">
 
-                </div>
+                <form @submit.prevent="handleSubmit($event)"
+                      novalidate="true"
+                      class="h-full w-full lg:w-2/3">
+
+                    <div class="w-full mb-10 flex">
+
+                        <div v-for="(slot, index) in getSlots()"
+                             :key="index">
+                            <p class="bg-gray-100 rounded-full p-3 m-2">
+                                {{ slot }}</p>
+                        </div>
+                    </div>
+
+                    <p v-if="v$.$error"
+                       class="p-5 bg-red-300 outline-red-500 text-xl m-2 rounded-lg mb-5">
+                        Please make sure to write a name, meeting title. <br>
+                        Also, make sure to write a valid email.
+                    </p>
+
+                    <div class="mb-5">
+                        <label for="name"
+                               class="text-sm font-bold text-gray-700 lg:text-2xl">Name</label>
+                        <div class="mt-1 border-gray-300">
+                            <input type="text"
+                                   v-model="state.name"
+                                   class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
+                             lg:text-2xl focus:outline-amber-500 rounded-md">
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="name"
+                               class=" text-sm font-bold text-gray-700 lg:text-2xl">Email</label>
+                        <div class="mt-1 border-gray-300 ">
+                            <input type="email"
+                                   v-model="state.email"
+                                   class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
+                             lg:text-2xl focus:outline-amber-500 rounded-md">
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="name"
+                               class=" text-sm font-bold text-gray-700 lg:text-2xl">Meeting
+                            title</label>
+                        <div class="mt-1 border-gray-300">
+                            <input type="text"
+                                   v-model="state.title"
+                                   class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
+                             lg:text-2xl focus:outline-amber-500 rounded-md">
+                        </div>
+                    </div>
+
+                    <div class="mb-5">
+                        <label for="comment"
+                               class=" text-sm font-bold text-gray-700 lg:text-2xl">Meeting
+                            description / agenda</label>
+                        <div class="mt-1">
+                            <textarea rows="4"
+                                      v-model="state.description"
+                                      class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
+                             lg:text-2xl focus:outline-amber-500 rounded-md"></textarea>
+                        </div>
+                    </div>
+
+                    <button class="drop-shadow-md md:p-3 p-2 bg-amber-400 hover:bg-amber-300 transition-colors duration-200 rounded-xl w-full text-lg md:text-2xl font-bold"
+                            type="submit">Reserve</button>
+
+                </form>
             </div>
 
         </div>
-
-
-        <div class="p-10 w-full mt-14 flex flex-col items-center">
-
-            <form @submit.prevent="handleSubmit($event)"
-                  class="h-full w-full lg:w-2/3"
-                  data-netlify="true"
-                  data-netlify-recaptcha="true">
-                <div class="mb-5">
-                    <label for="name"
-                           class="text-sm font-medium text-gray-700 lg:text-2xl">Name</label>
-                    <div class="mt-1 border-gray-300">
-                        <input type="text"
-                               v-model="name"
-                               class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
-                             lg:text-2xl focus:outline-amber-500">
-                    </div>
-                </div>
-
-                <div class="mb-5">
-                    <label for="name"
-                           class=" text-sm font-medium text-gray-700 lg:text-2xl">Email</label>
-                    <div class="mt-1 border-gray-300 ">
-                        <input type="email"
-                               v-model="email"
-                               class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
-                             lg:text-2xl focus:outline-amber-500">
-                    </div>
-                </div>
-
-                <div class="mb-5">
-                    <label for="name"
-                           class=" text-sm font-medium text-gray-700 lg:text-2xl">Meeting
-                        title</label>
-                    <div class="mt-1 border-gray-300">
-                        <input type="text"
-                               v-model="title"
-                               class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
-                             lg:text-2xl focus:outline-amber-500">
-                    </div>
-                </div>
-
-                <div class="mb-5">
-                    <label for="comment"
-                           class=" text-sm font-medium text-gray-700 lg:text-2xl">Meeting
-                        description / agenda</label>
-                    <div class="mt-1">
-                        <textarea rows="4"
-                                  v-model="description"
-                                  class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
-                             lg:text-2xl focus:outline-amber-500"></textarea>
-                    </div>
-                </div>
-
-                <button class="drop-shadow-md md:p-3 p-2 bg-amber-400 hover:bg-amber-300 transition-colors duration-200 rounded-xl w-full md:text-xl font-bold"
-                        type="submit">Reserve</button>
-
-            </form>
-        </div>
-
-    </div>
+    </app-wrapper>
 </template>
 
 <script>
+import AppWrapper from '../components/AppWrapper.vue'
 import lib from 'date-and-time';
-import { ref } from '@vue/reactivity';
+import { reactive, computed } from 'vue';
+import { required, email } from '@vuelidate/validators'
+import  useValidate from '@vuelidate/core'
 import { useRoute, useRouter } from 'vue-router';
 import { appFirestore } from '@/firebase/config';
+import { timestamp } from '../firebase/config';
 
 export default {
+    components: { AppWrapper },
     setup() {
+        
+        const state = reactive({
+            name: '',
+            email: '',
+            title: '',
+            description: ''
+        })
 
-        const name = ref('');
-        const email = ref('');
-        const title = ref('');
-        const description = ref('');
+        const rules = computed(() => {
+            return {
+                name: { required },
+                email: { required, email },
+                title: { required },
+            }
+        })
+
+        const v$ = useValidate(rules, state);
 
         const route = useRoute();
         const router = useRouter();
 
-        
         const handleSubmit = async () => {
-            const reservation = {
-                date: route.query.date,
-                name: name.value,
-                email: email.value,
-                room: route.query.room,
-                meeting_title: title.value,  
-                meeting_desc: description.value,
-                slots: route.query.time,
-                baseUrl: window.location.hostname + '/reservation/', 
+            await v$.value.$validate();
+            if (!v$.value.$error) {
+                const reservation = {
+                    date: route.query.date,
+                    name: state.name,
+                    email: state.email,
+                    room: route.query.room,
+                    meeting_title: state.title,
+                    meeting_desc: state.description,
+                    slots: getSlots(),
+                    baseUrl: window.location.hostname + '/reservations/',
+                    created_at: timestamp(),
+                }
+
+                appFirestore.collection('reservations').add(reservation);
+
+                router.push({ name: 'welcome' })
+            } else {
+                console.log('validation error')
             }
-
-            appFirestore.collection('reservations').add(reservation);
-
-            router.push({ name: 'welcome' })
         }
 
         const getDay = (date) => {
@@ -152,31 +182,68 @@ export default {
             return lib.format(dateObj, 'dddd, MMM DD');
         }
 
-        let imageBackground = ref('');
-        let imageWidth = ref('');
+        // const getSlotsNew = () => {
+        //     let finalSlots = [];
+        //     let slots = route.query.time.split(',');
+        //     let slotsArrayReplica = slots;
+            
+        //     let tmp = [];
+
+        //     for (let i = 0; i < slotsArrayReplica.length; i++) {
+        //         if (i === 0) {
+        //             if (isSlotAfter(slotsArrayReplica[i], slotsArrayReplica[i + 1]) && isSlotAfter(slotsArrayReplica[i + 1], slotsArrayReplica[i + 2])) {
+        //                 tmp.push(slotsArrayReplica[i])
+        //                 slots = slots.filter(item => item !== slotsArrayReplica[i + 1])
+        //             }
+        //         }
+        //         else if (i + 1 < slotsArrayReplica.length) {
+        //             if (isSlotAfter(slotsArrayReplica[i - 1], slotsArrayReplica[i]) && isSlotAfter(slotsArrayReplica[i], slotsArrayReplica[i + 1])) {
+        //                 slots = slots.filter(item => item !== slotsArrayReplica[i])
+        //             }
+        //         }
+        //     }
+
+        //     console.log(slots)
+        //     console.log(finalSlots)
+        // }
+
+        // const isSlotAfter = (a, b) => {
+        //     return !!(b - a == 30 || b - a == 70 || (a == '1230' && b == '0100'));
+        // }
+
+        const getSlots = () => {
+            const slots = route.query.time.split(',');
+            return slots.map(slot => {
+                return slot.substring(0, 2) + ":" + slot.substring(2)
+            });
+        }
 
         const image = (img) => {
             if(img === "1"){
-                imageBackground.value = 'bg-black ';
-                imageWidth.value = 'lg:w-64 w-32 '
-                return "/images/smartinfluence.png"
+                return "/images/smartinfluence-inverted.png"
             } else {
-                imageBackground.value = 'bg-white ';
-                imageWidth.value = 'w-20 '
-                return "/images/logo.png"
+                return "/images/AyMakan-En.png"
             }
+        }
+
+        const printMeetingRoom = (roomNumber) => {
+            if(roomNumber === "1") {
+                return "Smart Influence Meeting Room"
+            } else if (roomNumber === "0") {
+                return "Aymakan Meeting Room"
+            }
+
+            return "General Meeting Room"
         }
 
         return {
             getDay,
             image,
             handleSubmit,
-            name, 
-            email, 
-            title, 
-            description,
-            imageBackground,
-            imageWidth
+            getSlots,
+            printMeetingRoom,
+            state,
+            v$
         }
     }
 }

@@ -3,6 +3,7 @@ module.exports = {
   content: [
     "./index.html",
     "./src/**/*.{vue,js,ts,jsx,tsx}",
+    './node_modules/tw-elements/dist/js/**/*.js'
   ],
   theme: {
     screens: {
@@ -35,9 +36,19 @@ module.exports = {
       '6xl': '4rem',
       '7xl': '5rem',
     },
+    borderWidth: {
+      DEFAULT: '1px',
+      '0': '0',
+      '2': '1.6px',
+      '3': '3px',
+      '4': '4px',
+      '6': '6px',
+      '8': '8px',
+    },
     extend: {},
   },
   plugins: [
     require("@tailwindcss/forms"),
+    require('tw-elements/dist/plugin')
   ],
 }

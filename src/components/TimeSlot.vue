@@ -31,6 +31,9 @@ const props = defineProps({
   addToArray: {
     type: Boolean,
   },
+  disableCheckbox: {
+    type: Boolean,
+  }
 });
 
 
@@ -56,6 +59,16 @@ const secondCheckboxModal = computed({
   },
 });
 
+const isFirstCheckboxDisabled = () => {
+  let firstCheckboxValue = props.firstCheckboxLabel
+  emit('isFirstCheckboxDisabled', firstCheckboxValue)
+}
+
+const isSecondCheckboxDisabled = () => {
+  let secondCheckboxValue = props.secondCheckboxLabel
+  emit('isFirstCheckboxDisabled', secondCheckboxValue)
+}
+
 
 </script>
 <template>
@@ -64,20 +77,27 @@ const secondCheckboxModal = computed({
       {{ baseHour }} <span>{{ morningOrNoon }}</span>
     </p>
     <div class="form-check flex items-center">
-      <input class="form-check-input checkbox" type="checkbox"
+      <input class="form-check-input checkbox"
+             type="checkbox"
              :name="props.firstCheckboxName"
              :id="props.firstCheckboxName"
              :checked="props.validateCheck"
+             :disabled="isFirstCheckboxDisabled"
              v-model="firstCheckboxModal">
-      <label class="form-check-label text-md ml-2" :for="props.firstCheckboxName"> {{ props.firstCheckboxLabel }} </label>
+      <label class="form-check-label text-md ml-2"
+             :for="props.firstCheckboxName"> {{ props.firstCheckboxLabel }}
+      </label>
     </div>
     <div>
-      <input class="form-check-input checkbox" type="checkbox"
+      <input class="form-check-input checkbox"
+             type="checkbox"
              :name="props.secondCheckboxName"
              :id="props.secondCheckboxName"
              :checked="props.validateCheck"
+             :disabled="isSecondCheckboxDisabled"
              v-model="secondCheckboxModal">
-      <label class="form-check-label text-md md:text-lg ml-2" :for="props.secondCheckboxName">{{ props.secondCheckboxLabel }}</label>
+      <label class="form-check-label text-md md:text-lg ml-2"
+             :for="props.secondCheckboxName">{{ props.secondCheckboxLabel }}</label>
     </div>
   </div>
 </template>

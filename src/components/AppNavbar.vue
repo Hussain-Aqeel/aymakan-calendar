@@ -1,13 +1,19 @@
 <template>
+
   <nav
-      class="flex items-center mb-10 bg-red-900 font-bold tracking-widest text-white p-7 text-center md:text-xl">
-    <img src="../assets/logo.png"
-         alt="logo"
-         srcset=""
-         height="50"
-         width="50">
-    <h4 id="title"
-        class="ml-5">AyMakan Meeting Room Reserver</h4>
+       class="w-screen flex justify-center mb-10 font-bold tracking-widest p-7 text-center md:text-xl">
+
+    <router-link to="/">
+      <div class="relative">
+        <img src="../assets/logo.png"
+             alt="logo"
+             rel="preload"
+             class="w-56 lg:w-80 h-24 lg:h-36">
+      </div>
+
+    </router-link>
+
+
   </nav>
 </template>
 

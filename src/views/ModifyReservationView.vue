@@ -1,10 +1,14 @@
 <template>
-  <div></div>
+  <app-wrapper>
+    <div></div>
+  </app-wrapper>
 </template>
 
 <script>
-export default {
+import AppWrapper from '../components/AppWrapper.vue'
 
+export default {
+  components: { AppWrapper },
 }
 </script>
 
