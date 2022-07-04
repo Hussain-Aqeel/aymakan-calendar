@@ -1,5 +1,4 @@
 <template>
-  <app-wrapper>
     <div class="container mx-auto min-h-[60vh]">
       <div v-if="reservation">
         <div class="ml-10">
@@ -78,18 +77,16 @@
         </div>
       </div>
     </div>
-  </app-wrapper>
 </template>
 
 <script>
-import AppWrapper from '../components/AppWrapper.vue'
 import getSingleReservation from '../composables/getSingleReservation';
 import { useRoute, useRouter } from 'vue-router';
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
 import { appFirestore } from '../firebase/config';
 
 export default {
-  components: { AppWrapper, ClipLoader },
+  components: { ClipLoader },
   setup() {
 
     const route = useRoute();

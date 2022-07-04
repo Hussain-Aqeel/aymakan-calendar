@@ -1,5 +1,4 @@
 <template>
-  <app-wrapper>
     <div class="container mx-auto min-h-[60vh] text-gray-700">
 
       <div class="w-full flex justify-center">
@@ -57,17 +56,14 @@
         </div>
       </form>
     </div>
-  </app-wrapper>
 </template>
 
 <script>
-import AppWrapper from '../components/AppWrapper.vue'
 import lib from 'date-and-time';
 import { ref } from 'vue';
 
 export default {
   name: "HomeView",
-  components: { AppWrapper },
   
   setup() {
     const weekday = 

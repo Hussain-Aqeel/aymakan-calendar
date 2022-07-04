@@ -1,5 +1,4 @@
 <template>
-    <app-wrapper>
         <div class="md:container mx-auto text-gray-700 min-h-[60vh] p-6 mb-10">
 
             <router-link :to="'/slots?date=' + $route.query.date"
@@ -116,11 +115,9 @@
             </div>
 
         </div>
-    </app-wrapper>
 </template>
 
 <script>
-import AppWrapper from '../components/AppWrapper.vue'
 import lib from 'date-and-time';
 import { reactive, computed } from 'vue';
 import { required, email } from '@vuelidate/validators'
@@ -130,7 +127,7 @@ import { appFirestore } from '@/firebase/config';
 import { timestamp } from '../firebase/config';
 
 export default {
-    components: { AppWrapper },
+    components: {  },
     setup() {
         
         const state = reactive({

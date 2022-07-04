@@ -1,17 +1,21 @@
 <template>
-  <router-view v-slot="{Component}">
-    <!-- Use any custom transition and fallback to `fade` -->
-    <transition name="slide"
-                mode="out-in">
-      <component :is="Component"
-                  :key="$route.path" />
-    </transition>
-  </router-view>
+  <app-navbar />
+    <router-view v-slot="{Component}">
+      <!-- Use any custom transition and fallback to `fade` -->
+      <transition name="slide"
+                  mode="out-in">
+        <component :is="Component"
+                    :key="$route.path" />
+      </transition>
+    </router-view>
+  <app-footer />
 </template>
 
 <script>
+import AppNavbar from './components/AppNavbar.vue';
+import AppFooter from './components/AppFooter.vue';
 
-export default { }
+export default { components: { AppNavbar, AppFooter } }
 </script>
 <style>
 .slide-enter-active,

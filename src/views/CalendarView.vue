@@ -1,5 +1,4 @@
 <template>
-  <app-wrapper>
     <div class="container mx-auto min-h-[60vh] w-full">
 
       <router-link to="/">
@@ -39,18 +38,15 @@
         <p>No reservations are found</p>
       </div>
     </div>
-  </app-wrapper>
-
 </template>
 
 <script>
-import AppWrapper from '../components/AppWrapper.vue'
 import getReservations from '../composables/getReservations';
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
 import { ref } from 'vue'
 
 export default {
-  components: { AppWrapper, ClipLoader },
+  components: { ClipLoader },
   setup() {
     const { reservations, load, error } = getReservations();
     const slotsArr = ref([]);

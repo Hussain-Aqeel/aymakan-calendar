@@ -78,7 +78,7 @@ const secondCheckboxModal = computed({
 </script>
 <template>
   <div class="slot">
-    <p class="text-2xl md:text-3xl font-bold">
+    <p class="text-xl md:text-3xl font-bold">
       {{ baseHour }} <span>{{ morningOrNoon }}</span>
     </p>
     <div class="form-check flex items-center">

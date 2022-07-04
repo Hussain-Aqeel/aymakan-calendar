@@ -53,7 +53,13 @@ const routes = [
     path: '/error',
     name: 'error',
     component: ErrorView,
-  }
+  },
+  // will match everything and put it under `$route.params.pathMatch`
+  { 
+    path: '/:pathMatch(.*)*', 
+    name: 'error', 
+    component: ErrorView 
+  },
 ]
 
 const router = createRouter({

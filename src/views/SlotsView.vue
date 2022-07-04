@@ -1,8 +1,7 @@
 <template>
-  <app-wrapper>
     <div class="container mx-auto text-gray-700 min-h-[60vh]">
 
-      <router-link to="/">
+      <router-link to="/reserve">
         <span class="flex items-center hover:text-gray-500 md:text-2xl ml-10">
           <font-awesome-icon icon="fa-solid fa-square-caret-left"
                              class="mr-1" />
@@ -35,22 +34,59 @@
       </div>
 
       <div v-if="roomIsSelected()">
-        <div v-if="timeSlots"
-             class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+        <div v-if="timeSlots">
 
-          <div v-for="slot in timeSlots.rooms.first.slots"
-               :key="slot">
-            <TimeSlot :baseHour="slot.base.slot"
-                      :firstCheckboxLabel="slot.base.slot"
-                      :secondCheckboxLabel="slot.half.slot"
-                      :firstCheckboxName="slot.base.slot.replace(':', '')"
-                      :secondCheckboxName="slot.half.slot.replace(':', '')"
-                      :morningOrNoon="setMorningOrNoon()"
-                      :isFirstCheckboxDisabled="slot.base.reserved"
-                      :isSecondCheckboxDisabled="slot.half.reserved"
-                      @setTimeSlot="setTimeSlot"
-                      @setSecondTimeSlot="setTimeSlot" />
+          <div v-if="getRoom() == 0"
+               class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+            <div v-for="slot in timeSlots.rooms.first.slots"
+                 :key="slot">
+              <TimeSlot :baseHour="slot.base.slot"
+                        :firstCheckboxLabel="slot.base.slot"
+                        :secondCheckboxLabel="slot.half.slot"
+                        :firstCheckboxName="slot.base.slot.replace(':', '')"
+                        :secondCheckboxName="slot.half.slot.replace(':', '')"
+                        :morningOrNoon="setMorningOrNoon(slot.base.slot.substring(0, 2))"
+                        :isFirstCheckboxDisabled="slot.base.reserved"
+                        :isSecondCheckboxDisabled="slot.half.reserved"
+                        @setTimeSlot="setTimeSlot"
+                        @setSecondTimeSlot="setTimeSlot" />
+            </div>
           </div>
+
+          <div v-if="getRoom() == 1"
+               class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+            <div v-for="slot in timeSlots.rooms.second.slots"
+                 :key="slot">
+              <TimeSlot :baseHour="slot.base.slot"
+                        :firstCheckboxLabel="slot.base.slot"
+                        :secondCheckboxLabel="slot.half.slot"
+                        :firstCheckboxName="slot.base.slot.replace(':', '')"
+                        :secondCheckboxName="slot.half.slot.replace(':', '')"
+                        :morningOrNoon="setMorningOrNoon(slot.base.slot.substring(0, 2))"
+                        :isFirstCheckboxDisabled="slot.base.reserved"
+                        :isSecondCheckboxDisabled="slot.half.reserved"
+                        @setTimeSlot="setTimeSlot"
+                        @setSecondTimeSlot="setTimeSlot" />
+            </div>
+          </div>
+
+          <div v-if="getRoom() == 2"
+               class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+            <div v-for="slot in timeSlots.rooms.third.slots"
+                 :key="slot">
+              <TimeSlot :baseHour="slot.base.slot"
+                        :firstCheckboxLabel="slot.base.slot"
+                        :secondCheckboxLabel="slot.half.slot"
+                        :firstCheckboxName="slot.base.slot.replace(':', '')"
+                        :secondCheckboxName="slot.half.slot.replace(':', '')"
+                        :morningOrNoon="setMorningOrNoon(slot.base.slot.substring(0, 2))"
+                        :isFirstCheckboxDisabled="slot.base.reserved"
+                        :isSecondCheckboxDisabled="slot.half.reserved"
+                        @setTimeSlot="setTimeSlot"
+                        @setSecondTimeSlot="setTimeSlot" />
+            </div>
+          </div>
+
         </div>
         <div v-else>
           <ClipLoader></ClipLoader>
@@ -71,11 +107,9 @@
       </div>
 
     </div>
-  </app-wrapper>
 </template>
 
 <script>
-import AppWrapper from '../components/AppWrapper.vue'
 import TimeSlot from '@/components/TimeSlot.vue';
 import lib from 'date-and-time';
 import { ref } from 'vue';
@@ -84,7 +118,7 @@ import getTimeSlots from '../composables/getTimeSlots';
 import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
 
 export default {
-    components: { TimeSlot, AppWrapper, ClipLoader },
+    components: { TimeSlot, ClipLoader },
     setup() {
 
       // refs
@@ -100,8 +134,7 @@ export default {
       load();
       
       // Print PM or AM after the time slot
-      const setMorningOrNoon = () => {
-        let hour = convertTo12Hours(date.value.getHours());
+      const setMorningOrNoon = (hour) => {
         if((hour >= 8) && (hour < 12)) {
           return 'AM'
         } else {

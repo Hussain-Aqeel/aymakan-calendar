@@ -1,5 +1,4 @@
 <template>
-  <app-wrapper>
     <div
          class="container mx-auto flex flex-col justify-center items-center min-h-[60vh]">
 
@@ -22,15 +21,11 @@
 
 
     </div>
-  </app-wrapper>
-
 </template>
 
 <script>
 
-import AppWrapper from '../components/AppWrapper.vue'
 export default {
-    components: { AppWrapper }
 }
 </script>
 
