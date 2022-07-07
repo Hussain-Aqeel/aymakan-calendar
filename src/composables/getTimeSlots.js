@@ -15,7 +15,6 @@ const getTimeSlots = (date) => {
       querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
         timeSlots.value = { ...doc.data(), id: doc.id }
-        console.log(timeSlots.value.slots)
       });
 
     } catch (err) {

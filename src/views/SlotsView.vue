@@ -1,112 +1,116 @@
 <template>
-    <div class="container mx-auto text-gray-700 min-h-[60vh]">
+  <div class="container mx-auto text-gray-700 min-h-[60vh]">
 
-      <router-link to="/reserve">
-        <span class="flex items-center hover:text-gray-500 md:text-2xl ml-10">
-          <font-awesome-icon icon="fa-solid fa-square-caret-left"
-                             class="mr-1" />
-          <p>Back</p>
-        </span>
-      </router-link>
-      <div class="text-lg mt-6 font-bold md:text-3xl text-center w-full mb-4">
-        <font-awesome-icon icon="fa-solid fa-calendar-check" />
-        <p class="inline ml-3">
-          {{ formatDate($route.query.date) }}</p>
-      </div>
-
-
-      <div class="w-full flex justify-center mt-9 h-full">
-
-        <select name="LeaveType"
-                @change="onRoomChange($event)"
-                class="form-control outline-none border-none bg-gray-200 cursor-pointer appearance-none py-2 px-4 w-64 text-center focus:ring-amber-600 focus:ring-2">
-          <option selected
-                  disabled
-                  hidden
-                  value=""> Select Room </option>
-          <option value="0"> AyMakan Room
-          </option>
-          <option value="1"> Smart
-            Influence Room </option>
-          <option value="2"> General Room
-          </option>
-        </select>
-      </div>
-
-      <div v-if="roomIsSelected()">
-        <div v-if="timeSlots">
-
-          <div v-if="getRoom() == 0"
-               class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
-            <div v-for="slot in timeSlots.rooms.first.slots"
-                 :key="slot">
-              <TimeSlot :baseHour="slot.base.slot"
-                        :firstCheckboxLabel="slot.base.slot"
-                        :secondCheckboxLabel="slot.half.slot"
-                        :firstCheckboxName="slot.base.slot.replace(':', '')"
-                        :secondCheckboxName="slot.half.slot.replace(':', '')"
-                        :morningOrNoon="setMorningOrNoon(slot.base.slot.substring(0, 2))"
-                        :isFirstCheckboxDisabled="slot.base.reserved"
-                        :isSecondCheckboxDisabled="slot.half.reserved"
-                        @setTimeSlot="setTimeSlot"
-                        @setSecondTimeSlot="setTimeSlot" />
-            </div>
-          </div>
-
-          <div v-if="getRoom() == 1"
-               class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
-            <div v-for="slot in timeSlots.rooms.second.slots"
-                 :key="slot">
-              <TimeSlot :baseHour="slot.base.slot"
-                        :firstCheckboxLabel="slot.base.slot"
-                        :secondCheckboxLabel="slot.half.slot"
-                        :firstCheckboxName="slot.base.slot.replace(':', '')"
-                        :secondCheckboxName="slot.half.slot.replace(':', '')"
-                        :morningOrNoon="setMorningOrNoon(slot.base.slot.substring(0, 2))"
-                        :isFirstCheckboxDisabled="slot.base.reserved"
-                        :isSecondCheckboxDisabled="slot.half.reserved"
-                        @setTimeSlot="setTimeSlot"
-                        @setSecondTimeSlot="setTimeSlot" />
-            </div>
-          </div>
-
-          <div v-if="getRoom() == 2"
-               class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
-            <div v-for="slot in timeSlots.rooms.third.slots"
-                 :key="slot">
-              <TimeSlot :baseHour="slot.base.slot"
-                        :firstCheckboxLabel="slot.base.slot"
-                        :secondCheckboxLabel="slot.half.slot"
-                        :firstCheckboxName="slot.base.slot.replace(':', '')"
-                        :secondCheckboxName="slot.half.slot.replace(':', '')"
-                        :morningOrNoon="setMorningOrNoon(slot.base.slot.substring(0, 2))"
-                        :isFirstCheckboxDisabled="slot.base.reserved"
-                        :isSecondCheckboxDisabled="slot.half.reserved"
-                        @setTimeSlot="setTimeSlot"
-                        @setSecondTimeSlot="setTimeSlot" />
-            </div>
-          </div>
-
-        </div>
-        <div v-else>
-          <ClipLoader></ClipLoader>
-        </div>
-
-        <footer class="sticky bottom-1 p-2 flex justify-end"
-                v-show="time.length !== 0">
-          <router-link class="floating-btn"
-                       :to="'/reservation?date=' + $route.query.date + '&room=' + getRoom() + '&time=' + getSortedSlots(time)">
-            Reserve
-            now
-            <span class="ml-2">
-              <font-awesome-icon icon="fa-solid fa-arrow-right-long"
-                                 class=" bg-gray-500 p-1 rounded-full" />
-            </span>
-          </router-link>
-        </footer>
-      </div>
-
+    <router-link to="/reserve">
+      <span class="flex items-center hover:text-gray-500 md:text-2xl ml-10">
+        <font-awesome-icon icon="fa-solid fa-square-caret-left"
+                           class="mr-1" />
+        <p>Back</p>
+      </span>
+    </router-link>
+    <div class="text-lg mt-6 font-bold md:text-3xl text-center w-full mb-4">
+      <font-awesome-icon icon="fa-solid fa-calendar-check" />
+      <p class="inline ml-3">
+        {{ formatDate($route.query.date) }}</p>
     </div>
+
+
+    <div class="w-full flex justify-center mt-9 h-full">
+
+      <select name="LeaveType"
+              @change="onRoomChange($event)"
+              class="form-control outline-none border-none bg-gray-200 cursor-pointer appearance-none py-2 px-4 w-64 text-center focus:ring-amber-600 focus:ring-2">
+        <option selected
+                disabled
+                hidden
+                value=""> Select Room </option>
+        <option value="0"> AyMakan Room
+        </option>
+        <option value="1"> Smart
+          Influence Room </option>
+        <option value="2"> General Room
+        </option>
+      </select>
+    </div>
+
+    <div v-if="roomIsSelected()">
+      <div v-if="timeSlots">
+
+        <div v-if="getRoom() == 0"
+             class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+          <div v-for="slot in timeSlots.rooms.first.slots"
+               :key="slot">
+            <TimeSlot :baseHour="slot.base.slot"
+                      :firstCheckboxLabel="slot.base.slot"
+                      :secondCheckboxLabel="slot.half.slot"
+                      :firstCheckboxName="slot.base.slot.replace(':', '')"
+                      :secondCheckboxName="slot.half.slot.replace(':', '')"
+                      :morningOrNoon="setMorningOrNoon(slot.base.slot.substring(0, 2))"
+                      :isFirstCheckboxDisabled="slot.base.reserved"
+                      :isSecondCheckboxDisabled="slot.half.reserved"
+                      @setTimeSlot="setTimeSlot"
+                      @setSecondTimeSlot="setTimeSlot" />
+          </div>
+        </div>
+
+        <div v-if="getRoom() == 1"
+             class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+          <div v-for="slot in timeSlots.rooms.second.slots"
+               :key="slot">
+            <TimeSlot :baseHour="slot.base.slot"
+                      :firstCheckboxLabel="slot.base.slot"
+                      :secondCheckboxLabel="slot.half.slot"
+                      :firstCheckboxName="slot.base.slot.replace(':', '')"
+                      :secondCheckboxName="slot.half.slot.replace(':', '')"
+                      :morningOrNoon="setMorningOrNoon(slot.base.slot.substring(0, 2))"
+                      :isFirstCheckboxDisabled="slot.base.reserved"
+                      :isSecondCheckboxDisabled="slot.half.reserved"
+                      @setTimeSlot="setTimeSlot"
+                      @setSecondTimeSlot="setTimeSlot" />
+          </div>
+        </div>
+
+        <div v-if="getRoom() == 2"
+             class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+          <div v-for="slot in timeSlots.rooms.third.slots"
+               :key="slot">
+            <TimeSlot :baseHour="slot.base.slot"
+                      :firstCheckboxLabel="slot.base.slot"
+                      :secondCheckboxLabel="slot.half.slot"
+                      :firstCheckboxName="slot.base.slot.replace(':', '')"
+                      :secondCheckboxName="slot.half.slot.replace(':', '')"
+                      :morningOrNoon="setMorningOrNoon(slot.base.slot.substring(0, 2))"
+                      :isFirstCheckboxDisabled="slot.base.reserved"
+                      :isSecondCheckboxDisabled="slot.half.reserved"
+                      @setTimeSlot="setTimeSlot"
+                      @setSecondTimeSlot="setTimeSlot" />
+          </div>
+        </div>
+
+      </div>
+      <div v-else
+           class="
+         min-h-[40vh]
+         grid
+         place-content-center">
+        <AppLoader />
+      </div>
+
+      <footer class="sticky bottom-1 p-2 flex justify-end"
+              v-show="time.length !== 0">
+        <router-link class="floating-btn"
+                     :to="'/reservation?date=' + $route.query.date + '&room=' + getRoom() + '&time=' + getSortedSlots(time)">
+          Reserve
+          now
+          <span class="ml-2">
+            <font-awesome-icon icon="fa-solid fa-arrow-right-long"
+                               class=" bg-gray-500 p-1 rounded-full" />
+          </span>
+        </router-link>
+      </footer>
+    </div>
+
+  </div>
 </template>
 
 <script>
@@ -115,10 +119,10 @@ import lib from 'date-and-time';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import getTimeSlots from '../composables/getTimeSlots';
-import ClipLoader from 'vue-spinner/src/ClipLoader.vue';
+import AppLoader from '../components/AppLoader.vue';
 
 export default {
-    components: { TimeSlot, ClipLoader },
+    components: { TimeSlot, AppLoader },
     setup() {
 
       // refs

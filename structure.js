@@ -1,5 +1,5 @@
 let data = {
-  "created_at": timestamp(),
+  // "created_at": timestamp(),
   "date": "7-5-2022",
   "rooms": {
     "first": {
@@ -316,3 +316,5 @@ let data = {
     }
   }
 };
+
+export default data

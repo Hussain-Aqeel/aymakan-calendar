@@ -6,6 +6,7 @@ import SlotsView from '../views/SlotsView.vue';
 import WelcomeView from '../views/WelcomeView.vue';
 import CalendarView from '../views/CalendarView.vue';
 import ErrorView from '../views/ErrorView.vue';
+import SuccessfulReservationView from '../views/SuccessfulReservationView.vue';
 
 const routes = [
   {
@@ -53,6 +54,11 @@ const routes = [
     path: '/error',
     name: 'error',
     component: ErrorView,
+  },
+  {
+    path: '/successful',
+    name: 'success',
+    component: SuccessfulReservationView
   },
   // will match everything and put it under `$route.params.pathMatch`
   { 
