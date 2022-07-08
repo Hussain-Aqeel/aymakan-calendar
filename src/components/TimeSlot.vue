@@ -1,81 +1,3 @@
-<script setup>
-import { defineEmits, defineProps, computed } from 'vue';
-
-const emit = defineEmits(['setTimeSlot', 'setSecondTimeSlot']);
-
-const props = defineProps({
-  baseHour: {
-    type: String,
-  },
-  firstCheckboxLabel: {
-    type: String,
-  },
-  secondCheckboxLabel: {
-    type: String,
-  },
-  morningOrNoon: {
-    type: String,
-  },
-  firstCheckboxName: {
-    type: String,
-  },
-  secondCheckboxName: {
-    type: String,
-  },
-  firstCheckboxCheck: {
-    type: String,
-  },
-  secondCheckboxCheck: {
-    type: String,
-  },
-  addToArray: {
-    type: Boolean,
-  },
-  isFirstCheckboxDisabled: {
-    type: Boolean,
-  },
-  isSecondCheckboxDisabled: {
-    type: Boolean,
-  }
-});
-
-
-const firstCheckboxModal = computed({
-  get() {
-    return props.firstCheckboxName
-  },
-  set(val) {
-    let addToArray = (val) ? true : false;
-    let setFirstCheckbox = props.firstCheckboxName;
-    emit('setTimeSlot', setFirstCheckbox, addToArray);
-  },
-});
-
-const secondCheckboxModal = computed({
-  get() {
-    return props.secondCheckboxName;
-  },
-  set(val) {
-    let addToArray = (val) ? true : false;
-    let setSecondCheckbox = props.secondCheckboxName;
-    emit('setSecondTimeSlot', setSecondCheckbox, addToArray);
-  },
-});
-
-
-
-// const isFirstCheckboxDisabled = () => {
-//   let firstCheckboxValue = props.firstCheckboxLabel
-//   emit('isFirstCheckboxDisabled', firstCheckboxValue)
-// }
-
-// const isSecondCheckboxDisabled = () => {
-//   let secondCheckboxValue = props.secondCheckboxLabel
-//   emit('isSecondCheckboxDisabled', secondCheckboxValue)
-// }
-
-
-</script>
 <template>
   <div class="slot">
     <p class="text-xl md:text-3xl font-bold">
@@ -84,25 +6,70 @@ const secondCheckboxModal = computed({
     <div class="form-check flex items-center">
       <input class="form-check-input checkbox"
              type="checkbox"
-             :name="props.firstCheckboxName"
-             :id="props.firstCheckboxName"
-             :checked="props.validateCheck"
+             :name="firstCheckboxName"
+             :id="firstCheckboxName"
              :disabled="isFirstCheckboxDisabled"
              v-model="firstCheckboxModal">
       <label class="form-check-label text-md ml-2"
-             :for="props.firstCheckboxName"> {{ props.firstCheckboxLabel }}
+             :for="firstCheckboxName"> {{ firstCheckboxLabel }}
       </label>
     </div>
     <div>
       <input class="form-check-input checkbox"
              type="checkbox"
-             :name="props.secondCheckboxName"
-             :id="props.secondCheckboxName"
-             :checked="props.validateCheck"
+             :name="secondCheckboxName"
+             :id="secondCheckboxName"
              :disabled="isSecondCheckboxDisabled"
              v-model="secondCheckboxModal">
       <label class="form-check-label text-md md:text-lg ml-2"
-             :for="props.secondCheckboxName">{{ props.secondCheckboxLabel }}</label>
+             :for="secondCheckboxName">{{ secondCheckboxLabel }}</label>
     </div>
   </div>
 </template>
+
+<script>
+import { computed } from 'vue';
+
+export default {
+  props: {
+    baseHour: String,
+    firstCheckboxLabel: String,
+    secondCheckboxLabel: String,
+    morningOrNoon: String,
+    firstCheckboxName: String,
+    secondCheckboxName: String,
+    addToArray: Boolean,
+    isFirstCheckboxDisabled: Boolean,
+    isSecondCheckboxDisabled: Boolean, 
+  },
+
+  setup(props, context) {
+    const firstCheckboxModal = computed({
+      get() {
+        return props.firstCheckboxName
+      },
+      set(val) {
+        let addToArray = (val) ? true : false;
+        let setFirstCheckbox = props.firstCheckboxName;
+        context.emit('setTimeSlot', setFirstCheckbox, addToArray);
+      },
+    });
+
+    const secondCheckboxModal = computed({
+      get() {
+        return props.secondCheckboxName;
+      },
+      set(val) {
+        let addToArray = (val) ? true : false;
+        let setSecondCheckbox = props.secondCheckboxName;
+        context.emit('setSecondTimeSlot', setSecondCheckbox, addToArray);
+      },
+    });
+
+    return {
+      firstCheckboxModal,
+      secondCheckboxModal
+    }
+  }
+}
+</script>

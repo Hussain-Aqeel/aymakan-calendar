@@ -183,58 +183,61 @@ export default {
                     created_at: timestamp(),
                 }
 
-                appFirestore.collection('reservations').add(reservation);
+                // we will not reserve if there is an error fetching the time slots to disable them.
+                if(!error) {
+                    appFirestore.collection('reservations').add(reservation);
 
-                // here we will update the time slots and disable the reserved ones
-                let slotsArr;
+                    // here we will update the time slots and disable the reserved ones
+                    let slotsArr;
 
-                if(timeSlots.value) {
-                    if (route.query.room == '0') {
-                        slotsArr = timeSlots.value.rooms.first.slots;
-                        for (let i = 0; i < slotsArr.length; i++) {
-                            for (let j = 0; j < getSlots().length; j++) {
-                                if (slotsArr[i].base.slot == getSlots()[j]) {
-                                    timeSlots.value.rooms.first.slots[i].base.reserved = true;
-                                }
-                                if (slotsArr[i].half.slot == getSlots()[j]) {
-                                    timeSlots.value.rooms.first.slots[i].half.reserved = true;
+                    if (timeSlots.value) {
+                        if (route.query.room == '0') {
+                            slotsArr = timeSlots.value.rooms.first.slots;
+                            for (let i = 0; i < slotsArr.length; i++) {
+                                for (let j = 0; j < getSlots().length; j++) {
+                                    if (slotsArr[i].base.slot == getSlots()[j]) {
+                                        timeSlots.value.rooms.first.slots[i].base.reserved = true;
+                                    }
+                                    if (slotsArr[i].half.slot == getSlots()[j]) {
+                                        timeSlots.value.rooms.first.slots[i].half.reserved = true;
+                                    }
                                 }
                             }
                         }
-                    }
-                    if (route.query.room == '1') {
-                        slotsArr = timeSlots.value.rooms.second.slots;
-                        for (let i = 0; i < slotsArr.length; i++) {
-                            for (let j = 0; j < getSlots().length; j++) {
-                                if (slotsArr[i].base.slot == getSlots()[j]) {
-                                    timeSlots.value.rooms.second.slots[i].base.reserved = true;
-                                }
-                                if (slotsArr[i].half.slot == getSlots()[j]) {
-                                    timeSlots.value.rooms.second.slots[i].half.reserved = true;
-                                }
-                            }
-                        }
-                    }
-                    if (route.query.room == '2') {
-                        slotsArr = timeSlots.value.rooms.third.slots;
-                        for (let i = 0; i < slotsArr.length; i++) {
-                            for (let j = 0; j < getSlots().length; j++) {
-                                if (slotsArr[i].base.slot == getSlots()[j]) {
-                                    timeSlots.value.rooms.third.slots[i].base.reserved = true;
-                                }
-                                if (slotsArr[i].half.slot == getSlots()[j]) {
-                                    timeSlots.value.rooms.third.slots[i].half.reserved = true;
+                        if (route.query.room == '1') {
+                            slotsArr = timeSlots.value.rooms.second.slots;
+                            for (let i = 0; i < slotsArr.length; i++) {
+                                for (let j = 0; j < getSlots().length; j++) {
+                                    if (slotsArr[i].base.slot == getSlots()[j]) {
+                                        timeSlots.value.rooms.second.slots[i].base.reserved = true;
+                                    }
+                                    if (slotsArr[i].half.slot == getSlots()[j]) {
+                                        timeSlots.value.rooms.second.slots[i].half.reserved = true;
+                                    }
                                 }
                             }
                         }
+                        if (route.query.room == '2') {
+                            slotsArr = timeSlots.value.rooms.third.slots;
+                            for (let i = 0; i < slotsArr.length; i++) {
+                                for (let j = 0; j < getSlots().length; j++) {
+                                    if (slotsArr[i].base.slot == getSlots()[j]) {
+                                        timeSlots.value.rooms.third.slots[i].base.reserved = true;
+                                    }
+                                    if (slotsArr[i].half.slot == getSlots()[j]) {
+                                        timeSlots.value.rooms.third.slots[i].half.reserved = true;
+                                    }
+                                }
+                            }
+                        }
+                        // delete the previous document
+                        await appFirestore.collection('timeSlots').doc(timeSlots.value.id).delete();
+
+                        // add the new document (updated value)
+                        appFirestore.collection('timeSlots').add(timeSlots.value);
+
+                        router.push({ name: 'success' })
                     }
-                    // delete the previous document
-                    await appFirestore.collection('timeSlots').doc(timeSlots.value.id).delete();
-
-                    // add the new document (updated value)
-                    appFirestore.collection('timeSlots').add(timeSlots.value);
-
-                    router.push({ name: 'success' })
                 }
                 
             } else {
