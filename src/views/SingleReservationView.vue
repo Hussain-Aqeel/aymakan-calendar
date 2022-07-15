@@ -91,10 +91,6 @@ import { appFirestore } from '../firebase/config';
 
 export default {
   components: { AppLoader },
-  created() {
-
-  },
- 
   setup() {
 
     const route = useRoute();
@@ -112,7 +108,7 @@ export default {
 
     return {
       handleDelete,
-      reservation, 
+      reservation,
       error
     }
   }

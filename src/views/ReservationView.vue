@@ -40,6 +40,7 @@
             </div>
         </div>
 
+        {{ finalTimeSlots() }}
 
         <div class="p-5 w-full mt-5 flex flex-col items-center">
 
@@ -251,34 +252,72 @@ export default {
             return lib.format(dateObj, 'dddd, MMM DD');
         }
 
-        // const getSlotsNew = () => {
-        //     let finalSlots = [];
-        //     let slots = route.query.time.split(',');
-        //     let slotsArrayReplica = slots;
-            
-        //     let tmp = [];
+        const CreateTimeSlotsObject = () => {
+            let slots = route.query.time.split(',');
+            const slotsObject = Object.assign({}, slots);
 
-        //     for (let i = 0; i < slotsArrayReplica.length; i++) {
-        //         if (i === 0) {
-        //             if (isSlotAfter(slotsArrayReplica[i], slotsArrayReplica[i + 1]) && isSlotAfter(slotsArrayReplica[i + 1], slotsArrayReplica[i + 2])) {
-        //                 tmp.push(slotsArrayReplica[i])
-        //                 slots = slots.filter(item => item !== slotsArrayReplica[i + 1])
-        //             }
-        //         }
-        //         else if (i + 1 < slotsArrayReplica.length) {
-        //             if (isSlotAfter(slotsArrayReplica[i - 1], slotsArrayReplica[i]) && isSlotAfter(slotsArrayReplica[i], slotsArrayReplica[i + 1])) {
-        //                 slots = slots.filter(item => item !== slotsArrayReplica[i])
-        //             }
-        //         }
-        //     }
+            Object.entries(slotsObject).forEach(([key, value]) => {
+                slotsObject[key] = { slot: value, isAfter: false };
+            })            
 
-        //     console.log(slots)
-        //     console.log(finalSlots)
-        // }
+            for (let i = 0; i < slots.length; i++) {
+                if (i + 1 < slots.length) {
+                    if (isSlotAfter(slots[i], slots[i + 1])) {
+                        Object.entries(slotsObject).forEach(([_key, value]) => {
+                            if(value.slot == slots[i + 1]) {
+                                value.isAfter = true;
+                            }
+                        })
+                    }
+                }
+            }
 
-        // const isSlotAfter = (a, b) => {
-        //     return !!(b - a == 30 || b - a == 70 || (a == '1230' && b == '0100'));
-        // }
+            return slotsObject;
+        }
+
+        const finalTimeSlots = () => {
+            let obj = CreateTimeSlotsObject();
+            const entries = Object.entries(obj);
+
+            console.log(entries)
+            let finalArr = [];
+            let finalArrStr = [];
+
+            let count = 0;
+
+            for (let i = 0; i < entries.length; i = count) {
+                let temp = [];
+                let str = '';
+                temp.push(entries[i][1].slot);
+                str = entries[i][1].slot;
+                for (let j = count + 1; j < entries.length; j++) {
+                    if(j + 1 < entries.length) {
+                        if (entries[j][1].isAfter && !entries[j + 1][1].isAfter) {
+                            temp.push(entries[j][1].slot);
+                            str += " - " + entries[j][1].slot;
+                            count = j;
+                            break;
+                        }
+                    } else if(j + 1 == entries.length) {
+                        temp.push(entries[j][1].slot);
+                        str += " - " + entries[j][1].slot;
+                        count = j;
+                        break;
+                    }
+                }
+
+                count++;
+                finalArrStr.push(str);
+                finalArr.push(temp)         
+            }
+
+            console.log(finalArrStr)
+            return finalArr;
+        }
+
+        const isSlotAfter = (a, b) => {
+            return !!(b - a == 30 || b - a == 70 || (a == '1230' && b == '0100'));
+        }
 
         const getSlots = () => {
             const slots = route.query.time.split(',');
@@ -321,6 +360,7 @@ export default {
             handleSubmit,
             getSlots,
             printMeetingRoom,
+            finalTimeSlots,
             loading,
             state,
             v$
@@ -328,7 +368,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-</style>

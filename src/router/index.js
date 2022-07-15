@@ -4,7 +4,8 @@ import ReservationView from '../views/ReservationView.vue';
 import SingleReservationView from '../views/SingleReservationView.vue';
 import SlotsView from '../views/SlotsView.vue';
 import WelcomeView from '../views/WelcomeView.vue';
-import CalendarView from '../views/CalendarView.vue';
+// import CalendarView from '../views/CalendarView.vue';
+import NewCalendarView from '../views/NewCalendarView.vue'
 import ErrorView from '../views/ErrorView.vue';
 import SuccessfulReservationView from '../views/SuccessfulReservationView.vue';
 
@@ -23,7 +24,7 @@ const routes = [
   {
     path: '/calendar',
     name: 'calendar',
-    component: CalendarView,
+    component: NewCalendarView,
     meta: { transitionName: 'slide' },
   },
   {
