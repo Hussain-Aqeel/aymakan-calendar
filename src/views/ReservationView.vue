@@ -111,7 +111,6 @@
 
                 <button class="drop-shadow-md md:p-3 p-2 bg-amber-400 hover:bg-amber-300 transition-colors duration-200 rounded-xl w-full text-lg md:text-2xl font-bold"
                         type="submit">Reserve</button>
-
             </form>
         </div>
 
@@ -281,37 +280,31 @@ export default {
 
             console.log(entries)
             let finalArr = [];
-            let finalArrStr = [];
 
             let count = 0;
 
             for (let i = 0; i < entries.length; i = count) {
-                let temp = [];
                 let str = '';
-                temp.push(entries[i][1].slot);
-                str = entries[i][1].slot;
+                str = entries[i][1].slot.substring(0, 2) + ":" + entries[i][1].slot.substring(2);
+
                 for (let j = count + 1; j < entries.length; j++) {
                     if(j + 1 < entries.length) {
                         if (entries[j][1].isAfter && !entries[j + 1][1].isAfter) {
-                            temp.push(entries[j][1].slot);
-                            str += " - " + entries[j][1].slot;
+                            str += " - " + entries[j][1].slot.substring(0, 2) + ":" + entries[j][1].slot.substring(2);
                             count = j;
                             break;
                         }
                     } else if(j + 1 == entries.length) {
-                        temp.push(entries[j][1].slot);
-                        str += " - " + entries[j][1].slot;
+                        str += " - " + entries[j][1].slot.substring(0, 2) + ":" + entries[j][1].slot.substring(2);
                         count = j;
                         break;
                     }
                 }
 
                 count++;
-                finalArrStr.push(str);
-                finalArr.push(temp)         
+                finalArr.push(str)         
             }
 
-            console.log(finalArrStr)
             return finalArr;
         }
 
@@ -320,10 +313,7 @@ export default {
         }
 
         const getSlots = () => {
-            const slots = route.query.time.split(',');
-            return slots.map(slot => {
-                return slot.substring(0, 2) + ":" + slot.substring(2)
-            });
+            return finalTimeSlots();
         }
 
         const getRoom = () => {

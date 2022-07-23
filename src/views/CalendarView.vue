@@ -1,64 +1,169 @@
 <template>
-  <div class="container mx-auto min-h-[60vh] w-full">
+  <div class="container mx-auto min-h-[60vh] text-gray-700">
 
     <router-link to="/">
       <span
-            class="flex items-center hover:text-gray-500 md:text-2xl ml-10 mb-10">
+            class="flex items-center hover:text-gray-500 md:text-2xl ml-10 mb-7">
         <font-awesome-icon icon="fa-solid fa-square-caret-left"
                            class="mr-1" />
         <p>Back</p>
       </span>
     </router-link>
 
-    <div v-if="reservations">
-      <div v-if="reservations.length !== 0">
-        <h1 class="text-3xl font-bold ml-9">Reservations</h1>
-        <div v-for="(reservation, index) in reservations"
-             :key="index">
-          <div class="p-3 m-5 ml-9 bg-amber-300 rounded-lg text-xl w-4/5">
-            <h2 class="text-xl font-bold m-2">Name: {{ reservation.name }}
-            </h2>
-            <p class="m-2">Email: {{ reservation.email }}</p>
-            <p class="font-bold m-2">Date: {{ reservation.date }}</p>
-            <p class="m-2">Reserved time slots:</p>
-            <div v-for="slot in reservation.slots"
-                 :key="slot"
-                 class="grid grid-cols-3 text-center">
-              <span class="inline px-3 py-2 m-3 bg-white rounded-full">
-                {{ slot }}</span>
-            </div>
+
+    <div class="w-full flex justify-center">
+      <span class="w-48 md:w-80 flex justify-between items-center">
+        <button @click="previousWeek()">
+          <font-awesome-icon icon="fa-solid fa-chevron-left"
+                             class="p-4" />
+        </button>
+        <ul>
+          <li class="md:text-xl font-bold">
+            {{ displayedDate }}
+          </li>
+        </ul>
+        <button @click="nextWeek()">
+          <font-awesome-icon icon="fa-solid fa-chevron-right"
+                             class="p-4" />
+        </button>
+      </span>
+    </div>
+
+    <form action="">
+
+      <div v-for="(day, index) in weekday"
+           v-bind:key="day.id">
+        <div
+             v-if="lib.addDays(currentDate, index - currentDate.getDay()) < currentDate">
+
+          <div
+               class="drop-shadow-md outline outline-0 hover:outline-offset-2 rounded-md m-4 p-5 text-center md:text-xl bg-gray-200 flex items-center justify-between">
+
+            <strong>{{ day.name }}</strong>
+
+            <p class="text-xs md:text-sm"
+               v-bind="currentDate">
+              {{ formatDate(setNextDay(currentDate, index - currentDate.getDay())) }}
+            </p>
+
           </div>
         </div>
+        <div v-else>
+          <router-link
+                       :to="'/calendar/' +
+                       formatQueryDate(getNextDay(currentDate, index - currentDate.getDay()))">
+            <div
+                 class="drop-shadow-md outline outline-0 hover:outline-offset-2 rounded-md m-4 p-5 text-center md:text-xl bg-amber-400 hover:bg-amber-300 hover:cursor-pointer flex items-center justify-between">
+
+              <strong>{{ day.name }}</strong>
+              <p class="text-xs md:text-sm">
+                {{ formatDate(getNextDay(currentDate, index - currentDate.getDay())) }}
+              </p>
+            </div>
+          </router-link>
+
+        </div>
       </div>
-      <div v-else
-           class="min-h-[40vh] grid place-content-center">
-        <AppLoader />
-      </div>
-    </div>
-    <div v-else>
-      <p>No reservations are found</p>
-    </div>
+    </form>
   </div>
 </template>
 
 <script>
-import getReservations from '../composables/getReservations';
-import AppLoader from '@/components/AppLoader.vue';
-import { ref } from 'vue'
+import lib from 'date-and-time';
+import { ref } from 'vue';
 
 export default {
-  components: { AppLoader },
   setup() {
-    const { reservations, load, error } = getReservations();
-    const slotsArr = ref([]);
-    load();
+    const weekday =
+      [
+        {
+          id: 0,
+          name: "Sunday"
+        },
+        {
+          id: 1,
+          name: "Monday"
+        },
+        {
+          id: 2,
+          name: "Tuesday"
+        },
+        {
+          id: 3,
+          name: "Wednesday"
+        },
+        {
+          id: 4,
+          name: "Thursday"
+        }
+      ];
 
-    return { reservations, error, slotsArr }
+    let firstDate = ref(new Date());
+    let currentDate = ref(new Date());
 
-  }
+    let displayedDate = ref(lib.format(currentDate.value, 'ddd, MMM DD'));
+
+    const setNextDay = (a, b) => {
+      return lib.addDays(a, b);
+    }
+
+    const getNextDay = (a, b) => {
+      return lib.addDays(a, b);
+    }
+
+    const formatDate = (date) => {
+      return lib.format(date, 'MMM/DD');
+    }
+
+    const formatQueryDate = (date) => {
+      return lib.format(date, 'D-M-YYYY')
+    }
+
+    const setDisplayedDate = (date) => {
+      displayedDate.value = lib.format(date, 'ddd, MMM DD');
+    }
+
+    const nextWeek = () => {
+      if (currentDate.value.getDay() !== 0) {
+        let counter = parseInt(0);
+        for (let i = currentDate.value.getDay(); i > 0; i--) {
+          counter++;
+        }
+        currentDate.value = lib.addDays(currentDate.value, 7 - counter);
+      } else {
+        currentDate.value = lib.addDays(currentDate.value, 7);
+      }
+      setDisplayedDate(currentDate.value);
+    }
+
+    const previousWeek = () => {
+      if (lib.addDays(currentDate.value, -7) >= firstDate.value) {
+        currentDate.value = lib.addDays(currentDate.value, -7);
+      } else {
+        currentDate.value = firstDate.value;
+      }
+      setDisplayedDate(currentDate.value);
+    }
+
+
+    // expose to template and other options API hooks
+    return {
+      displayedDate,
+      weekday,
+      currentDate,
+      lib,
+      setDisplayedDate,
+      nextWeek,
+      previousWeek,
+      setNextDay,
+      getNextDay,
+      formatDate,
+      formatQueryDate
+    }
+  },
+
 }
 </script>
 
 <style>
-
 </style>

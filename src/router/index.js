@@ -4,61 +4,97 @@ import ReservationView from '../views/ReservationView.vue';
 import SingleReservationView from '../views/SingleReservationView.vue';
 import SlotsView from '../views/SlotsView.vue';
 import WelcomeView from '../views/WelcomeView.vue';
-// import CalendarView from '../views/CalendarView.vue';
-import NewCalendarView from '../views/NewCalendarView.vue'
+import CalendarView from '../views/CalendarView.vue';
 import ErrorView from '../views/ErrorView.vue';
 import SuccessfulReservationView from '../views/SuccessfulReservationView.vue';
+import MeetingsOfSpecificDayView from '../views/MeetingsOfSpecificDayView.vue'; 
 
 const routes = [
   {
     path: '/',
     name: 'welcome',
-    component: WelcomeView
+    component: WelcomeView,
+    meta: {
+      title: 'Aymakan reservation system',
+      transitionName: 'slide'
+    },
   },
   {
     path: '/reserve',
     name: 'reserve',
     component: ReserveView,
-    meta: { transitionName: 'slide' },
+    meta: { 
+      title: 'reserve',
+      transitionName: 'slide' 
+    },
   },
   {
     path: '/calendar',
     name: 'calendar',
-    component: NewCalendarView,
-    meta: { transitionName: 'slide' },
+    component: CalendarView,
+    meta: {
+      title: 'calendar',
+      transitionName: 'slide'
+    },
   },
   {
     path: '/reservation',
     name: 'reservation',
     component: ReservationView,
-    meta: { transitionName: 'slide' },
+    meta: {
+      title: 'reservation',
+      transitionName: 'slide'
+    },
     props: route => ({
       query: route.query.date,
       room: route.query.room,
-      // time: route.query.time
     })
   },
   {
     path: '/reservations/:id',
     name: 'modifyReservation',
     component: SingleReservationView,
+    meta: {
+      title: 'reservation',
+      transitionName: 'slide'
+    },
     props: true,
   },
   {
     path: '/slots',
     name: 'slots',
     component: SlotsView,
-    meta: { transitionName: 'slide' },
+    meta: {
+      title: 'time slots',
+      transitionName: 'slide'
+    },
     props: route => ({ query: route.query.date })
+  },
+  {
+    path: '/calendar/:date',
+    name: 'specificDayReservations',
+    component: MeetingsOfSpecificDayView,
+    meta: {
+      title: 'calendar',
+      transitionName: 'slide'
+    },
+    props: true,
   },
   {
     path: '/error',
     name: 'error',
+    meta: {
+      title: 'error',
+    },
     component: ErrorView,
   },
   {
     path: '/successful',
     name: 'success',
+    meta: {
+      title: 'success',
+      transitionName: 'slide'
+    },
     component: SuccessfulReservationView
   },
   // will match everything and put it under `$route.params.pathMatch`
@@ -78,6 +114,11 @@ const router = createRouter({
     }
     return { left: 0, top: 0 }
   }
-})
+});
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title
+  next()
+});
 
 export default router

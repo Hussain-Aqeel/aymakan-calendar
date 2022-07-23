@@ -8,24 +8,35 @@
           </span>
           Reservation Details
         </h2>
-        <div class="info-block">
-          <h4 class="text-xl font-semibold">Name</h4>
-          <p>{{ reservation.name }}</p>
-        </div>
-        <div class="info-block">
-          <h4 class="text-xl font-semibold">Email</h4>
-          <p>{{ reservation.email }}</p>
-        </div>
+        <ol
+            class="mt-2 divide-y divide-gray-200 text-sm leading-6 text-gray-500">
+          <li class="py-4">
+            <p class="w-28 flex-none text-lg font-bold">{{ reservation.name }}
+            </p>
+            <p class="w-28 flex-none mt-2">Meeting title</p>
+            <p class="flex-auto font-semibold text-gray-900 sm:mt-0">
+              {{ reservation.meeting_title }}</p>
+
+            <p class="flex-none mt-2"
+               v-for="slot in reservation.slots"
+               :key="slot">
+
+              <time>{{ slot }}</time>
+            </p>
+          </li>
+        </ol>
 
       </div>
-      <div class="m-4 flex justify-evenly">
-        <button
-                class="p-3 bg-emerald-500 hover:bg-emerald-400 duration-200 text-white font-bold text-xl rounded-lg">Edit</button>
+      <div class="m-4 w-full flex flex-col md:flex-row">
         <button type="button"
-                class="p-3 bg-red-900 hover:bg-red-800 duration-200 text-white text-xl font-bold rounded-lg"
+                class="inline-block w-32 py-2 px-3 bg-emerald-500 hover:bg-emerald-400 duration-200 text-white font-bold text-md rounded-lg">
+                Edit
+        </button>
+        <button type="button"
+                class="inline-block w-32 py-2 px-3 md:ml-3 mt-3 bg-red-700 hover:bg-red-800 duration-200 text-white text-md font-bold rounded-lg"
                 data-bs-toggle="modal"
                 data-bs-target="#modal">
-          Delete reservation
+          Delete
         </button>
       </div>
     </div>
@@ -68,12 +79,12 @@
         <div
              class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 rounded-b-md">
           <button type="button"
-                  class="inline-block px-6 py-2.5 bg-amber-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-amber-700 hover:shadow-lg focus:bg-amber-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-amber-800 active:shadow-lg transition duration-150 ease-in-out"
+                  class="inline-block px-6 py-2.5 bg-amber-600 text-white font-medium uppercase rounded hover:bg-amber-700 hover:shadow-lg focus:bg-amber-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-amber-800 active:shadow-lg transition duration-150 ease-in-out"
                   data-bs-dismiss="modal">
             Close
           </button>
           <button type="button"
-                  class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
+                  class="inline-block px-6 py-2.5 bg-red-600 text-white font-medium uppercase rounded shadow-md hover:bg-red-700 hover:shadow-lg focus:bg-red-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-red-800 active:shadow-lg transition duration-150 ease-in-out ml-1"
                   @click="handleDelete()">
             Delete
           </button>
