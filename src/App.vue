@@ -1,13 +1,15 @@
 <template>
+  <span
+        class="absolute right-0 text-sm inline-block py-1 px-2.5 leading-none text-center whitespace-nowrap align-baseline font-bold bg-amber-400">beta</span>
   <app-navbar />
-    <router-view v-slot="{Component}">
-      <!-- Use any custom transition and fallback to `fade` -->
-      <transition name="slide"
-                  mode="out-in">
-        <component :is="Component"
-                    :key="$route.path" />
-      </transition>
-    </router-view>
+  <router-view v-slot="{Component}">
+    <!-- Use any custom transition and fallback to `fade` -->
+    <transition name="slide"
+                mode="out-in">
+      <component :is="Component"
+                 :key="$route.path" />
+    </transition>
+  </router-view>
   <app-footer />
 </template>
 

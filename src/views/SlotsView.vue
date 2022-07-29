@@ -2,24 +2,24 @@
   <div class="container mx-auto text-gray-700 min-h-[60vh]">
 
     <router-link to="/reserve">
-      <span class="flex items-center hover:text-gray-500 md:text-2xl ml-10">
+      <span class="flex items-center ml-10 hover:text-gray-500 md:text-2xl">
         <font-awesome-icon icon="fa-solid fa-square-caret-left"
                            class="mr-1" />
         <p>Back</p>
       </span>
     </router-link>
-    <div class="text-lg mt-6 font-bold md:text-3xl text-center w-full mb-4">
+    <div class="w-full mt-6 mb-4 text-lg font-bold text-center md:text-3xl">
       <font-awesome-icon icon="fa-solid fa-calendar-check" />
       <p class="inline ml-3">
         {{ formatDate($route.query.date) }}</p>
     </div>
 
 
-    <div class="w-full flex justify-center mt-9 h-full">
+    <div class="flex justify-center w-full h-full mt-9">
 
       <select name="LeaveType"
               @change="onRoomChange($event)"
-              class="form-control outline-none border-none bg-gray-200 cursor-pointer appearance-none py-2 px-4 w-64 text-center focus:ring-amber-600 focus:ring-2">
+              class="w-64 px-4 py-2 text-center bg-gray-200 border-none outline-none appearance-none cursor-pointer form-control focus:ring-amber-600 focus:ring-2">
         <option selected
                 disabled
                 hidden
@@ -37,7 +37,7 @@
       <div v-if="timeSlots">
 
         <div v-if="getRoom() == 0"
-             class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+             class="grid h-full grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15">
           <div v-for="slot in timeSlots.rooms.first.slots"
                :key="slot">
             <TimeSlot :baseHour="slot.base.slot"
@@ -54,7 +54,7 @@
         </div>
 
         <div v-if="getRoom() == 1"
-             class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+             class="grid h-full grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15">
           <div v-for="slot in timeSlots.rooms.second.slots"
                :key="slot">
             <TimeSlot :baseHour="slot.base.slot"
@@ -71,7 +71,7 @@
         </div>
 
         <div v-if="getRoom() == 2"
-             class="grid grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15 h-full">
+             class="grid h-full grid-cols-2 p-7 md:grid-cols-3 lg:grid-cols-4 gap-x-15">
           <div v-for="slot in timeSlots.rooms.third.slots"
                :key="slot">
             <TimeSlot :baseHour="slot.base.slot"
@@ -96,7 +96,7 @@
         <AppLoader />
       </div>
 
-      <footer class="sticky bottom-1 p-2 flex justify-end"
+      <footer class="sticky flex justify-end p-2 bottom-1"
               v-show="time.length !== 0">
         <router-link class="floating-btn"
                      :to="'/reservation?date=' + $route.query.date + '&room=' + getRoom() + '&time=' + getSortedSlots(time)">
@@ -104,7 +104,7 @@
           now
           <span class="ml-2">
             <font-awesome-icon icon="fa-solid fa-arrow-right-long"
-                               class=" bg-gray-500 p-1 rounded-full" />
+                               class="p-1 bg-gray-500 rounded-full " />
           </span>
         </router-link>
       </footer>
@@ -145,7 +145,7 @@ export default {
           return 'PM';
           }
       }
-
+      
       const convertTo12Hours = (hour) => {
         return hour % 12 || 12;
       }

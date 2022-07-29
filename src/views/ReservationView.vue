@@ -5,60 +5,59 @@
         <router-link :to="'/slots?date=' + $route.query.date"
                      class="self-start">
             <span
-                  class="flex items-center hover:text-gray-500 md:text-2xl ml-10">
+                  class="flex items-center ml-10 hover:text-gray-500 md:text-2xl">
                 <font-awesome-icon icon="fa-solid fa-square-caret-left"
                                    class="mr-1" />
                 <p>Back</p>
             </span>
         </router-link>
 
-
         <div
-             class="flex items-center space-x-8 lg:space-x-14 justify-center mt-20 text-center">
+             class="flex items-center justify-center mt-20 space-x-8 text-center lg:space-x-14">
             <div id="slots"
-                 class="drop-shadow-md mb-7 relative">
-                <div class="absolute -left-4 -top-4 bg-amber-400 rounded-full">
+                 class="relative drop-shadow-md mb-7">
+                <div class="absolute rounded-full -left-4 -top-4 bg-amber-400">
                     <font-awesome-icon icon="fa-solid fa-calendar-days"
                                        class="p-4 lg:text-lg" />
                 </div>
                 <div
-                     class="justify-center lg:w-80 h-57 p-3 bg-amber-400 rounded-xl font-bold">
+                     class="justify-center p-3 font-bold lg:w-80 h-57 bg-amber-400 rounded-xl">
                     <div
-                         class="mb-3 mt-5 border-b-2 border-black border-opacity-10">
+                         class="mt-5 mb-3 border-b-2 border-black border-opacity-10">
                         <span
-                              class="font-bold block pb-4">{{ printMeetingRoom($route.query.room) }}</span>
+                              class="block pb-4 font-bold">{{ printMeetingRoom($route.query.room) }}</span>
                     </div>
                     <img :src="image($route.query.room)"
                          alt="company logo"
-                         class="my-6 h-30 p-3 rounded-md bg-white lg:w-80 w-60">
+                         class="p-3 my-6 bg-white rounded-md h-30 lg:w-80 w-60">
                     <div
-                         class="mb-3 border-t border-2 border-black border-opacity-10 rounded-lg">
+                         class="mb-3 border-2 border-t border-black rounded-lg border-opacity-10">
                     </div>
                     <small
-                           class="mt-4 z-10 text-2xl lg:text-3xl">{{ getDay($route.query.date) }}</small>
+                           class="z-10 mt-4 text-2xl lg:text-3xl">{{ getDay($route.query.date) }}</small>
                 </div>
             </div>
         </div>
 
-        {{ finalTimeSlots() }}
-
-        <div class="p-5 w-full mt-5 flex flex-col items-center">
+        <div class="flex flex-col items-center w-full p-5 mt-5">
 
             <form @submit.prevent="handleSubmit($event)"
                   novalidate="true"
-                  class="h-full w-full lg:w-2/3">
+                  class="w-full h-full lg:w-2/3">
 
-                <div class="w-full mb-10 flex">
 
-                    <div v-for="(slot, index) in getSlots()"
-                         :key="index">
-                        <p class="bg-gray-100 rounded-full p-3 m-2">
-                            {{ slot }}</p>
-                    </div>
+                <div class="flex flex-wrap mb-10 space-x-2"
+                     v-for="(slot, index) in getSlots()"
+                     :key="index">
+                    <span
+                          class="flex px-4 py-2 text-sm font-semibold text-gray-500 transition duration-300 border border-gray-300 rounded-full cursor-pointer align-center w-max active:bg-gray-300 ease">
+                        {{ slot }}
+                    </span>
                 </div>
 
+
                 <p v-if="v$.$error"
-                   class="p-5 bg-red-300 outline-red-500 text-xl m-2 rounded-lg mb-5">
+                   class="p-5 m-2 mb-5 text-xl bg-red-300 rounded-lg outline-red-500">
                     Please make sure to write a name, meeting title. <br>
                     Also, make sure to write a valid email.
                 </p>
@@ -69,47 +68,43 @@
                     <div class="mt-1 border-gray-300">
                         <input type="text"
                                v-model="state.name"
-                               class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
-                             lg:text-2xl focus:outline-amber-500 rounded-md">
+                               class="w-full p-1 bg-gray-100 border-0 rounded-md ring-0 focus:ring-0 lg:text-2xl focus:outline-amber-500">
                     </div>
                 </div>
 
                 <div class="mb-5">
                     <label for="name"
-                           class=" text-sm font-bold text-gray-700 lg:text-2xl">Email</label>
+                           class="text-sm font-bold text-gray-700 lg:text-2xl">Email</label>
                     <div class="mt-1 border-gray-300 ">
                         <input type="email"
                                v-model="state.email"
-                               class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
-                             lg:text-2xl focus:outline-amber-500 rounded-md">
+                               class="w-full p-1 bg-gray-100 border-0 rounded-md ring-0 focus:ring-0 lg:text-2xl focus:outline-amber-500">
                     </div>
                 </div>
 
                 <div class="mb-5">
                     <label for="name"
-                           class=" text-sm font-bold text-gray-700 lg:text-2xl">Meeting
+                           class="text-sm font-bold text-gray-700 lg:text-2xl">Meeting
                         title</label>
                     <div class="mt-1 border-gray-300">
                         <input type="text"
                                v-model="state.title"
-                               class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
-                             lg:text-2xl focus:outline-amber-500 rounded-md">
+                               class="w-full p-1 bg-gray-100 border-0 rounded-md ring-0 focus:ring-0 lg:text-2xl focus:outline-amber-500">
                     </div>
                 </div>
 
                 <div class="mb-5">
                     <label for="comment"
-                           class=" text-sm font-bold text-gray-700 lg:text-2xl">Meeting
+                           class="text-sm font-bold text-gray-700 lg:text-2xl">Meeting
                         description / agenda</label>
                     <div class="mt-1">
                         <textarea rows="4"
                                   v-model="state.description"
-                                  class="p-1 w-full border-0 bg-gray-100 ring-0 focus:ring-0
-                             lg:text-2xl focus:outline-amber-500 rounded-md"></textarea>
+                                  class="w-full p-1 bg-gray-100 border-0 rounded-md ring-0 focus:ring-0 lg:text-2xl focus:outline-amber-500"></textarea>
                     </div>
                 </div>
 
-                <button class="drop-shadow-md md:p-3 p-2 bg-amber-400 hover:bg-amber-300 transition-colors duration-200 rounded-xl w-full text-lg md:text-2xl font-bold"
+                <button class="w-full p-2 text-lg font-bold transition-colors duration-200 drop-shadow-md md:p-3 bg-amber-400 hover:bg-amber-300 rounded-xl md:text-2xl"
                         type="submit">Reserve</button>
             </form>
         </div>
@@ -245,75 +240,92 @@ export default {
             }
         }
 
+        const convertTo24 = (date) => {
+            if ((date.getHours() < 8)) {
+                return lib.addHours(date, 12);
+            }
+            
+            return date;
+        }
+
         const getDay = (date) => {
             const arr = date.split("-");
             const dateObj = new Date(parseInt(arr[2]), parseInt(arr[1]) - 1, parseInt(arr[0]));
             return lib.format(dateObj, 'dddd, MMM DD');
         }
 
-        const CreateTimeSlotsObject = () => {
+        const processTimeSlots = () => {
             let slots = route.query.time.split(',');
+        
+            slots = 
+                slots
+                    .map(slot => {
+                        return slot.substring(0, 2).padStart(2, '0') + ':' + slot.substring(2).padStart(2, '0');
+                    }).map(slot => {
+                        return lib.parse(slot, 'hh:mm');
+                    }).map(slot => {
+                        return convertTo24(slot);
+                    })
+
+            // console.log(slots);
             const slotsObject = Object.assign({}, slots);
 
             Object.entries(slotsObject).forEach(([key, value]) => {
                 slotsObject[key] = { slot: value, isAfter: false };
-            })            
+            })
+            
+            const entries = Object.entries(slotsObject);
 
-            for (let i = 0; i < slots.length; i++) {
-                if (i + 1 < slots.length) {
-                    if (isSlotAfter(slots[i], slots[i + 1])) {
-                        Object.entries(slotsObject).forEach(([_key, value]) => {
-                            if(value.slot == slots[i + 1]) {
-                                value.isAfter = true;
-                            }
-                        })
-                    }
-                }
+            let result = [];
+            for (let i = 0; i < entries.length; i++) {
+                let tmp = [];
+                
+                tmp.push(entries[i][1].slot);
+                
+                // check if the difference is 30 minutes
+                while (i + 1 < entries.length && lib.subtract(entries[i + 1][1].slot, entries[i][1].slot).toMinutes() == 30) {
+                    tmp.push(entries[i + 1][1].slot)
+                    i++;
+                }   
+                                   
+                result.push(tmp);
             }
 
-            return slotsObject;
+            return result;
         }
+
 
         const finalTimeSlots = () => {
-            let obj = CreateTimeSlotsObject();
-            const entries = Object.entries(obj);
-
-            console.log(entries)
-            let finalArr = [];
-
-            let count = 0;
-
-            for (let i = 0; i < entries.length; i = count) {
-                let str = '';
-                str = entries[i][1].slot.substring(0, 2) + ":" + entries[i][1].slot.substring(2);
-
-                for (let j = count + 1; j < entries.length; j++) {
-                    if(j + 1 < entries.length) {
-                        if (entries[j][1].isAfter && !entries[j + 1][1].isAfter) {
-                            str += " - " + entries[j][1].slot.substring(0, 2) + ":" + entries[j][1].slot.substring(2);
-                            count = j;
-                            break;
-                        }
-                    } else if(j + 1 == entries.length) {
-                        str += " - " + entries[j][1].slot.substring(0, 2) + ":" + entries[j][1].slot.substring(2);
-                        count = j;
-                        break;
-                    }
-                }
-
-                count++;
-                finalArr.push(str)         
+            let slots = processTimeSlots(); 
+            
+            for (let i = 0; i < slots.length; i++) {
+                if (slots[i].length != 1) {
+                    let lastSlot = slots[i][slots[i].length - 1];
+                    slots[i][slots[i].length - 1] = lib.addMinutes(lastSlot, 30);
+                } else {
+                    slots[i][0] = [slots[i][0], lib.addMinutes(slots[i][0], 30)];     
+                }     
             }
 
-            return finalArr;
-        }
+            slots = slots.map(slot => {
+                return slot.map(arr => {
+                    return lib.format(arr, 'hh:mm A');
+                })
+            })
 
-        const isSlotAfter = (a, b) => {
-            return !!(b - a == 30 || b - a == 70 || (a == '1230' && b == '0100'));
+            console.log(slots);
+            return slots;
         }
 
         const getSlots = () => {
-            return finalTimeSlots();
+            let final = finalTimeSlots();
+            let arr = [];
+            
+            for (let i = 0; i < final.length; i++) {
+                arr.push(final[i][0] + '-' + final[i][final.length - 1])
+                
+            }
+            return arr;
         }
 
         const getRoom = () => {
@@ -351,6 +363,7 @@ export default {
             getSlots,
             printMeetingRoom,
             finalTimeSlots,
+            processTimeSlots,
             loading,
             state,
             v$

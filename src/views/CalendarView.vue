@@ -1,9 +1,9 @@
 <template>
-  <div class="container mx-auto min-h-[60vh] text-gray-700">
-
+  <div
+       class="container mx-auto min-h-[60vh] text-gray-700">
     <router-link to="/">
       <span
-            class="flex items-center hover:text-gray-500 md:text-2xl ml-10 mb-7">
+            class="flex items-center ml-10 hover:text-gray-500 md:text-2xl mb-7">
         <font-awesome-icon icon="fa-solid fa-square-caret-left"
                            class="mr-1" />
         <p>Back</p>
@@ -11,14 +11,14 @@
     </router-link>
 
 
-    <div class="w-full flex justify-center">
-      <span class="w-48 md:w-80 flex justify-between items-center">
+    <div class="flex justify-center w-full">
+      <span class="flex items-center justify-between w-48 md:w-80">
         <button @click="previousWeek()">
           <font-awesome-icon icon="fa-solid fa-chevron-left"
                              class="p-4" />
         </button>
         <ul>
-          <li class="md:text-xl font-bold">
+          <li class="font-bold md:text-xl">
             {{ displayedDate }}
           </li>
         </ul>
@@ -37,7 +37,7 @@
              v-if="lib.addDays(currentDate, index - currentDate.getDay()) < currentDate">
 
           <div
-               class="drop-shadow-md outline outline-0 hover:outline-offset-2 rounded-md m-4 p-5 text-center md:text-xl bg-gray-200 flex items-center justify-between">
+               class="flex items-center justify-between p-5 m-4 text-center bg-gray-200 rounded-md drop-shadow-md outline outline-0 hover:outline-offset-2 md:text-xl">
 
             <strong>{{ day.name }}</strong>
 
@@ -53,7 +53,7 @@
                        :to="'/calendar/' +
                        formatQueryDate(getNextDay(currentDate, index - currentDate.getDay()))">
             <div
-                 class="drop-shadow-md outline outline-0 hover:outline-offset-2 rounded-md m-4 p-5 text-center md:text-xl bg-amber-400 hover:bg-amber-300 hover:cursor-pointer flex items-center justify-between">
+                 class="flex items-center justify-between p-5 m-4 text-center rounded-md drop-shadow-md outline outline-0 hover:outline-offset-2 md:text-xl bg-amber-400 hover:bg-amber-300 hover:cursor-pointer">
 
               <strong>{{ day.name }}</strong>
               <p class="text-xs md:text-sm">

@@ -1,16 +1,16 @@
 <template>
   <div class="slot">
-    <p class="text-xl md:text-3xl font-bold">
+    <p class="text-xl font-bold md:text-3xl">
       {{ baseHour }} <span>{{ morningOrNoon }}</span>
     </p>
-    <div class="form-check flex items-center">
+    <div class="flex items-center form-check">
       <input class="form-check-input checkbox"
              type="checkbox"
              :name="firstCheckboxName"
              :id="firstCheckboxName"
              :disabled="isFirstCheckboxDisabled"
              v-model="firstCheckboxModal">
-      <label class="form-check-label text-md ml-2"
+      <label class="ml-2 form-check-label text-md"
              :for="firstCheckboxName"> {{ firstCheckboxLabel }}
       </label>
     </div>
@@ -21,7 +21,7 @@
              :id="secondCheckboxName"
              :disabled="isSecondCheckboxDisabled"
              v-model="secondCheckboxModal">
-      <label class="form-check-label text-md md:text-lg ml-2"
+      <label class="ml-2 form-check-label text-md md:text-lg"
              :for="secondCheckboxName">{{ secondCheckboxLabel }}</label>
     </div>
   </div>

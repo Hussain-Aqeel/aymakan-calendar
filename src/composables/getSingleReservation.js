@@ -3,9 +3,9 @@ import { appFirestore } from '../firebase/config';
 
 const getSingleReservation = (id) => {
   const reservation = ref(null)
-  const error = ref(null)
+  const resError = ref(null)
 
-  const load = async () => {
+  const loadReservation = async () => {
     try {
       let res = await appFirestore.collection('reservations').doc(id).get()
       reservation.value = { ...res.data(), id: res.id }
@@ -15,12 +15,12 @@ const getSingleReservation = (id) => {
       }
 
     } catch (err) {
-      error.value = err.message
-      console.log(error.value)
+      resError.value = err.message
+      console.log(resError.value)
     }
   }
 
-  return { reservation, error, load }
+  return { reservation, resError, loadReservation }
 }
 
 export default getSingleReservation
